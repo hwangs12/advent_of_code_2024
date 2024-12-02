@@ -20,7 +20,7 @@ int main() {
     int index1 = 0;
     int index2 = 0;
     int diffTotal = 0;
-    file_ptr = fopen("input.txt", "r");
+    file_ptr = fopen("day001input.txt", "r");
     if (NULL == file_ptr) {
         printf("File can't be opened \n");
     }
