@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int all_increasing(int* arr, int arrSize) {
     for (int i = 1; i < arrSize; i++) {
@@ -38,30 +39,25 @@ void parse_input_text() {
     int list_2[1000];
     int num1;
     int num2;
-    char* endptr;
     char* token;
     int index1 = 0;
     int index2 = 0;
-    file_ptr = fopen("day001input.txt", "r");
+    file_ptr = fopen("day002input.txt", "r");
     if (NULL == file_ptr) {
         printf("File can't be opened \n");
     }
     while (fgets(str, 50, file_ptr) != NULL) {
-        token = strtok(str, "   ");
-        num1 = atoi(token);
-        list_1[index1] = num1;
+        token = strtok(str, " ");
+        
         while (token != NULL) {
-            token = strtok(NULL, "   ");
-            if (token != NULL) {
-                num2 = atoi(token);
-                list_2[index2] = num2;
-            }
+            token = strtok(NULL, " ");
+            printf("%s : ", token);
         }
-        index1++;
-        index2++;
+
     }
 }
 
 int main() {
-
+    parse_input_text();
+    return 0;
 }
