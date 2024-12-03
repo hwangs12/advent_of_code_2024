@@ -31,7 +31,6 @@ int safe_level(int* arr, int arrSize) {
     return 1;
 }
 
-
 void parse_input_text() {
     FILE *file_ptr;
     char str[50];
@@ -40,21 +39,36 @@ void parse_input_text() {
     int num1;
     int num2;
     char* token;
-    int index1 = 0;
-    int index2 = 0;
+    int index = 0;
+    int count = 0;
+    int arrToCheck[20];
+    int totalSafe = 0;
     file_ptr = fopen("day002input.txt", "r");
     if (NULL == file_ptr) {
         printf("File can't be opened \n");
     }
     while (fgets(str, 50, file_ptr) != NULL) {
         token = strtok(str, " ");
-        
+        arrToCheck[index++] = atoi(token);
+        count++;
         while (token != NULL) {
             token = strtok(NULL, " ");
-            printf("%s : ", token);
+            if (token == NULL) {
+                break;
+            }
+            count++;
+            arrToCheck[index++] = atoi(token);
+        }
+        int inc_dec_safe = (all_decreasing(arrToCheck, count) || all_increasing(arrToCheck, count)) && safe_level(arrToCheck, count);
+        if (inc_dec_safe) {
+            totalSafe++;
         }
 
+        index = 0;
+        count = 0;
+        memset(arrToCheck, 0, sizeof(arrToCheck));
     }
+    printf("total safe is: %d.\n", totalSafe);
 }
 
 int main() {
