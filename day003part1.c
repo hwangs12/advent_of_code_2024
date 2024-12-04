@@ -28,7 +28,7 @@ int main() {
         num1 = atoi(token);
         token = strtok(NULL, "\n");
         num2 = atoi(token);
-        int multiple = num1 * num2;
+        multiple = num1 * num2;
         sum += multiple;
     }
 

@@ -11,7 +11,9 @@
  * 8. copy and paste to day003input_extract_4.txt
  * 7. remove all the lines each starting at line with no, then lines up to but not including yes. (this I did manually so far and it's annoying)
  * 8. remove all the lines with yes. 
- * 9. use extract_4 to read and get the sum below. 
+ * 9. use extract_4 to read, use part1 solution to get the sum. 
+ * 
+ * if you don't like manual line removal for 'no', stop at extract_3 and run solution below. that way we save manual editing of the file.
  */
 
 #include <stdio.h>
@@ -25,17 +27,33 @@ int main() {
     int num2;
     int multiple;
     int sum = 0;
+    int yes;
+    int no;
     char* token;
-    file_ptr = fopen("day003input_extract_4.txt", "r");
+    file_ptr = fopen("day003input_extract_3.txt", "r");
     if (NULL == file_ptr) {
         printf("File can't be opened \n");
     }
     while (fgets(str, 10, file_ptr) != NULL) {
+        yes = strcmp(str, "yes\n") == 0;
+        no = strcmp(str, "no\n") == 0;
+        if (yes) {
+            continue;
+        }
+        if (no) {
+            while (fgets(str, 10, file_ptr) != NULL) {
+                yes = strcmp(str, "yes\n") == 0;
+                if (yes) {
+                    break;
+                }
+            }
+            continue;
+        }
         token = strtok(str, ",");
         num1 = atoi(token);
         token = strtok(NULL, "\n");
         num2 = atoi(token);
-        int multiple = num1 * num2;
+        multiple = num1 * num2;
         sum += multiple;
     }
 
