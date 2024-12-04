@@ -4,8 +4,14 @@
  * 1. find matching text with `do[(][)]|don't[(][)]|mul[(][0-9]+,[0-9]+[)]`
  * 2. highlight(select) all using cmd + shift + L
  * 3. cmd + c & cmd + v and paste into day003input_extract_2.txt
- * 4. 
- * 4. below using that extract to find solution
+ * 4. remove all the mul() and just leave the two numbers
+ * 5. change all the don't() to no. 
+ * 6. change all the do to yes.
+ * 7. copy and paste to day003input_extract_3.txt
+ * 8. copy and paste to day003input_extract_4.txt
+ * 7. remove all the lines each starting at line with no, then lines up to but not including yes. (this I did manually so far and it's annoying)
+ * 8. remove all the lines with yes. 
+ * 9. use extract_4 to read and get the sum below. 
  */
 
 #include <stdio.h>
@@ -20,7 +26,7 @@ int main() {
     int multiple;
     int sum = 0;
     char* token;
-    file_ptr = fopen("day003input_extract_5.txt", "r");
+    file_ptr = fopen("day003input_extract_4.txt", "r");
     if (NULL == file_ptr) {
         printf("File can't be opened \n");
     }
