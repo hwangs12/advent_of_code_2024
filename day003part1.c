@@ -1,10 +1,9 @@
 /* kind of cheated in the beginning, using vscode find function and regular expression matching */
 
 /**
- * 1. find matching text with `do[(][)]|don't[(][)]|mul[(][0-9]+,[0-9]+[)]`
+ * 1. find matching text with `mul[(][0-9]+,[0-9]+[)]`
  * 2. highlight(select) all using cmd + shift + L
  * 3. cmd + c & cmd + v and paste into day003input_extract_2.txt
- * 4. 
  * 4. below using that extract to find solution
  */
 
