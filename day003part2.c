@@ -20,7 +20,7 @@ int main() {
     int multiple;
     int sum = 0;
     char* token;
-    file_ptr = fopen("day003input_extract_1.txt", "r");
+    file_ptr = fopen("day003input_extract_2.txt", "r");
     if (NULL == file_ptr) {
         printf("File can't be opened \n");
     }
