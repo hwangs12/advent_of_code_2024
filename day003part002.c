@@ -30,7 +30,7 @@ int main() {
     int yes;
     int no;
     char* token;
-    file_ptr = fopen("day003input_extract_3.txt", "r");
+    file_ptr = fopen("day003input004.txt", "r");
     if (NULL == file_ptr) {
         printf("File can't be opened \n");
     }
