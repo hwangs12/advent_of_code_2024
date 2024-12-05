@@ -11,6 +11,10 @@
  * total:           2562
  */
 
+/**
+ * reverse string in vim: `:%! rev`
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
