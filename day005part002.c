@@ -1,5 +1,3 @@
-/* kind of cheated in the beginning, using vscode find function and regular expression matching */
-
 /**
  * 1. extract lines from rulesheet
  * 2. 
@@ -25,6 +23,8 @@ void read_rulesheet() {
     int index = 0;
     int temp = 0;
     char swap[5] = "";
+    int sum = 0;
+    int noskip = 0;
 
     fgets(rules, 6000, rulesheet);
     while (fgets(str, 100, update_instruction) != NULL) {
@@ -34,12 +34,12 @@ void read_rulesheet() {
             token = strtok_r(NULL, ",\n", &savedptr);
         }
         for (int i = 0; i < index - 1; i++) {
-            sprintf(copy1, lineArr[i]);
-            sprintf(copy2, lineArr[i+1]);
+            sprintf(copy1, "%d", lineArr[i]);
+            sprintf(copy2, "%d", lineArr[i+1]);
             strcat(swap, copy2);
             strcat(swap, copy1);
-            printf("%s \t", swap);
             if (strstr(rules, swap) != NULL) {
+                noskip = 1;
                 temp = lineArr[i+1];
                 lineArr[i+1] = lineArr[i];
                 lineArr[i] = temp;
@@ -49,12 +49,15 @@ void read_rulesheet() {
             memset(copy2, 0, sizeof(copy2));
             memset(swap, 0, sizeof(swap));
         }
-
+        if (noskip) {
+            sum += lineArr[index/2];
+        }
+        memset(lineArr, 0 , sizeof(lineArr));
+        noskip = 0;
         index = 0;
-        break;
     }
 
-    
+    printf("%d", sum);
 
     fclose(update_instruction);
     fclose(rulesheet);
