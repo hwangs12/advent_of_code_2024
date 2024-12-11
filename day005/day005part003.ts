@@ -1379,15 +1379,22 @@ let output: number[] = [];
 // 1. sort left side first. Ascending
 // 2. for those equal values, sort right side after. Ascending
 input.sort((ruleA, ruleB) => ruleA[0] - ruleB[0] || ruleA[1] - ruleB[1]);
+let dict: { [id: string] : number[] } = {};
 
+for (let rule of input) {
+    if (!dict[`${rule[0]}`]) {
+        dict[`${rule[0]}`] = []
+    }
+    dict[`${rule[0]}`].push(rule[1]);
+}
 
-
+// use selection sort?
 
 // Asynchronous write
-// fs.writeFile('day005part003_output2.json', JSON.stringify(input), (err) => {
-//     if (err) {
-//       console.error(err);
-//       return;
-//     }
-//     console.log('File written successfully!');
-//   });
+/* fs.writeFile('day005part003_output2.json', JSON.stringify(dict), (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log('File written successfully!');
+  }); */
