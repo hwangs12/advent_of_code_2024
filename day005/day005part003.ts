@@ -1388,7 +1388,59 @@ for (let rule of input) {
     dict[`${rule[0]}`].push(rule[1]);
 }
 
+
+
+// define greater
+function greater(a: number, b: string, rule: Record<string, number[]>) {
+    return rule[b].indexOf(a) !== -1;
+}
+
+function areArraysEqual(arr1: any[], arr2: any[]) {
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
+  
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+        return false;
+      }
+    }
+  
+    return true;
+  }
+  
+
+
 // use selection sort?
+
+let logger = fs.createWriteStream('day005part003_output3.json', {flags: 'a'})
+let arrCopy: number[] = [];
+let sum = 0;
+for (let update of updates) {
+    arrCopy = update.slice();
+    for (let i = update.length - 1; i >= 1; i--) {
+        let max_idx = i;
+
+        for (let j = i - 1; j >= 0; j--) {
+            if (greater(update[j], update[max_idx].toString(), dict)) {
+                max_idx = j;
+            }
+        }
+
+        let temp = update[i];
+        update[i] = update[max_idx];
+        update[max_idx] = temp;
+    }
+    if (!areArraysEqual(arrCopy, update)) {
+        sum += update[Math.trunc(update.length / 2)]
+    }
+    logger.write(JSON.stringify(update));
+    logger.write('\n');
+}
+
+console.log(sum);
+
+logger.end();
 
 // Asynchronous write
 /* fs.writeFile('day005part003_output2.json', JSON.stringify(dict), (err) => {
