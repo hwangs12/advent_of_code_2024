@@ -55,7 +55,7 @@ function keepMoving(matrix: string[][], horseLocation: number[]): string[][] {
 function moveUp(matrix: string[][], horseLocation: number[]): string[][] {
     const row = horseLocation[0];
     const column = horseLocation[1];
-    matrix[row][column] = 'O';
+    matrix[row][column] = '+';
     matrix[row - 1][column] = '^';
     return matrix;
 }
@@ -63,7 +63,7 @@ function moveUp(matrix: string[][], horseLocation: number[]): string[][] {
 function moveDown(matrix: string[][], horseLocation: number[]): string[][] {
     const row = horseLocation[0];
     const column = horseLocation[1];
-    matrix[row][column] = 'O';
+    matrix[row][column] = '+';
     matrix[row + 1][column] = 'v';
     return matrix;
 }
@@ -71,7 +71,7 @@ function moveDown(matrix: string[][], horseLocation: number[]): string[][] {
 function moveLeft(matrix: string[][], horseLocation: number[]): string[][] {
     const row = horseLocation[0];
     const column = horseLocation[1];
-    matrix[row][column] = 'O';
+    matrix[row][column] = '+';
     matrix[row][column - 1] = '<';
     return matrix;
 }
@@ -79,7 +79,7 @@ function moveLeft(matrix: string[][], horseLocation: number[]): string[][] {
 function moveRight(matrix: string[][], horseLocation: number[]): string[][] {
     const row = horseLocation[0];
     const column = horseLocation[1];
-    matrix[row][column] = 'O';
+    matrix[row][column] = '+';
     matrix[row][column + 1] = '>';
     return matrix;
 }
