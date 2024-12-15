@@ -1,5 +1,7 @@
 {
-  "devDependencies": {
-    "@types/node": "^22.10.1"
-  }
+    "type": "module",
+    "devDependencies": {
+        "@types/node": "^22.10.1",
+        "tsx": "^4.19.2"
+    }
 }
