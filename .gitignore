@@ -3,3 +3,4 @@ a.out
 *.dSYM/
 *.out
 *.swp
+node_modules/**
