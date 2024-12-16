@@ -105,15 +105,47 @@ function hitWallOrMove(matrix: string[][], horseLocation: number[]): string[][]{
     }
 }
 
-function horseLooped(matrix: string[][], startingPoint: number[]): boolean {
-    let cornerVisited: number[][] = [[0, 0]];
-    while (cornerVisited) {}
-    return false;
+function horseLooped(matrix: string[][], horseLocation: number[]): boolean {
+    const row = horseLocation[0];
+    const column = horseLocation[1];
+    const cur = matrix[row][column];
+    const left = matrix[row][column - 1];
+    const right = matrix[row][column + 1];
+    const up = matrix[row - 1][column];
+    const down = matrix[row + 1][column];
+    if (up === '+' && cur === '^') {
+        return true;
+    } else if (left === '+' && cur === '<') {
+        return true;
+    } else if (right === '+' && cur === '>') {
+        return true;
+    } else if (down === '+' && cur === 'v') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function addWall(matrix: string[][], horseLocation: number[]): string[][] {
+    const row = horseLocation[0];
+    const column = horseLocation[1];
+    const cur = matrix[row][column];
+    if (cur === '^') {
+        matrix[row - 1][column] = '#';
+    } else if (cur === '<') {
+        matrix[row][column-1] = '#';
+    } else if (cur === '>') {
+        matrix[row][column+1] = '#';
+    } else if (cur === 'v') {
+        matrix[row+1][column] = '#';
+    } 
+    return matrix;
 }
 
 function runTheGame(matrix: string[][], horseLocation: number[]) {
     
     while (!exited(matrix, horseLocation)) {
+        matrix = addWall(matrix, horseLocation);    // added a wall but do not want to add another wall. 
         matrix = hitWallOrMove(matrix, horseLocation);
         const oldrow = horseLocation[0];
         const oldcol = horseLocation[1];
