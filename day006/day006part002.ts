@@ -6,6 +6,51 @@ export enum ParsingTypes {
     Array = "array",
 }
 
+class Solution {
+    private matrix: string[][] = [];
+    private horseLocation: number[] = [0, 0];
+
+    async readFileAndParseTo(filename: string, parseTo: ParsingTypes) {
+        if (parseTo === ParsingTypes.Matrix) {
+            const matrix: string[][] = [];
+            const row: string[] = [];
+            const file = await fs.open(filename);
+    
+            for await (const line of file.readLines()) {
+                let newRow = row.concat(line.split(""));
+                matrix.push(newRow);
+            }
+    
+            this.matrix = matrix;
+            this.findHorseLocation(matrix);
+        }
+    }
+
+    private findHorseLocation(matrix: string[][]) {
+        let initialLocation = [0, 0];
+        for (let i = 0; i < matrix.length; i++) {
+            if (matrix[i].indexOf("^") !== -1) {
+                initialLocation[0] = i;
+                initialLocation[1] = matrix[i].indexOf("^");
+            }
+        }
+        this.horseLocation = initialLocation;
+    }
+
+    private exited(matrix: string[][], horseLocation: number[]) {
+        const row = horseLocation[0];
+        const column = horseLocation[1];
+        const cur = matrix[row][column];
+        return (cur === '<' && column === 0) || (cur === '>' && column === matrix[0].length - 1) || (cur === "^" && row === 0) || (cur === "v" && row === matrix.length - 1);
+    }
+
+    countLoops(matrix: string[][]) {
+        while (!exited(matrix, this.horseLocation)) {
+
+        }
+    }
+}
+
 async function readFileAndParseTo(filename: string, parseTo: ParsingTypes) {
     if (parseTo === ParsingTypes.Matrix) {
         const matrix: string[][] = [];
@@ -144,8 +189,8 @@ function addWall(matrix: string[][], horseLocation: number[]): string[][] {
 
 function runTheGame(matrix: string[][], horseLocation: number[]) {
     
+    matrix = addWall(matrix, horseLocation);    // added a wall but do not want to add another wall. 
     while (!exited(matrix, horseLocation)) {
-        matrix = addWall(matrix, horseLocation);    // added a wall but do not want to add another wall. 
         matrix = hitWallOrMove(matrix, horseLocation);
         const oldrow = horseLocation[0];
         const oldcol = horseLocation[1];
@@ -162,7 +207,6 @@ function runTheGame(matrix: string[][], horseLocation: number[]) {
         } else {
             horseLocation = [oldrow+1, oldcol];
         }
-        
     }
     let numOs = 0;
     for (let i = 0; i < matrix.length; i++) {
