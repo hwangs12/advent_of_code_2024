@@ -21,6 +21,23 @@ class Solution {
         }
     }
 
+    private newLocation(initialPosition: number[], velocity: number[], seconds: number): number[] {
+        let newPosition = [(initialPosition[0] + (velocity[0] * seconds)) % 101, (initialPosition[1] + (velocity[1] * seconds)) % 103]
+        if (newPosition[0] < 0) {
+            newPosition[0] = 101 + newPosition[0];
+        } else if (newPosition[0] === 0) {
+            newPosition[0] = 0;
+        }
+
+        if (newPosition[1] < 0) {
+            newPosition[1] = 103 + newPosition[1];
+        } else if (newPosition[1] === 0) {
+            newPosition[1] = 0;
+        }
+
+        return newPosition;
+    }
+
     private async readCoordinates(filename: string) {
         const file = await fs.open(filename);
         for await (const line of file.readLines()) {
@@ -35,13 +52,15 @@ class Solution {
             for (const velStrVal of velocityInString) {
                 velocity.push(Number(velStrVal));
             }
+
+            let newLocale = this.newLocation(position, velocity, 100);
+            console.log(newLocale);
             this.putRobotOnTiles(position);
         }        
     }
 
     public async solve() {
         await this.createRobotMap();
-        console.log(JSON.stringify(this.tiles));
     }
 }
 
