@@ -2,6 +2,11 @@ import { promises as fs } from "fs";
 
 class Solution {
     private tiles: string[][] = [];
+    private quad1: number = 0;
+    private quad2: number = 0;
+    private quad3: number = 0;
+    private quad4: number = 0;
+
 
     private async createRobotMap() {
         let tiles: string[][] = [];
@@ -54,9 +59,28 @@ class Solution {
             }
 
             let newLocale = this.newLocation(position, velocity, 100);
-            console.log(newLocale);
-            this.putRobotOnTiles(position);
+            this.classifyQuadrant(newLocale);
+            this.putRobotOnTiles(newLocale);
         }        
+    }
+
+    private classifyQuadrant(position: number[]) {
+        const [col, row] = position;
+        if (col < 51 && row < 52) {
+            console.log(position, ' -- ', 'quad1')
+            this.quad1++;
+        } else if (col > 51 && row < 52) {
+            console.log(position, ' -- ', 'quad2')
+            this.quad2++;
+        } else if (col < 51 && row > 52) {
+            console.log(position, ' -- ', 'quad3')
+            this.quad3++;
+        } else if (col > 51 && row > 52) {
+            console.log(position, ' -- ', 'quad4')
+            this.quad4++;
+        } else {
+            console.log(position, ' -- ', 'don\'t belong')
+        }
     }
 
     public async solve() {
