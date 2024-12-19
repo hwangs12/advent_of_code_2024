@@ -8,13 +8,26 @@ class Solution {
     private quad4: number = 0;
 
 
-    private async createRobotMap() {
+    private async createRobotMap(elapsed: number) {
         let tiles: string[][] = [];
         for (let i = 0; i < 103; i++) {
             tiles.push(Array<string>(101).fill('.'))
         }
         this.tiles = tiles;
-        await this.readCoordinates('day014input001.txt');
+        await this.readCoordinates('day014input001.txt', elapsed);
+        let strView = this.changeArrayToStringView(this.tiles);
+        if (strView.includes("1 1 1 1 1 1 1 1 1 1 1")) {
+            process.stdout.write((elapsed).toString() + '\n');
+            process.stdout.write(strView);
+        }
+    }
+
+    private changeArrayToStringView(board: string[][]) {
+        let bigstr = "";
+        for (let row of board) {
+            bigstr = bigstr.concat(row.join(" "), "\n");
+        }
+        return bigstr;
     }
 
     private putRobotOnTiles(position: number[]) {
@@ -43,7 +56,7 @@ class Solution {
         return newPosition;
     }
 
-    private async readCoordinates(filename: string) {
+    private async readCoordinates(filename: string, elapsed: number) {
         const file = await fs.open(filename);
         for await (const line of file.readLines()) {
             let position: number[] = [];
@@ -58,7 +71,7 @@ class Solution {
                 velocity.push(Number(velStrVal));
             }
 
-            let newLocale = this.newLocation(position, velocity, 100);
+            let newLocale = this.newLocation(position, velocity, elapsed);
             this.classifyQuadrant(newLocale);
             this.putRobotOnTiles(newLocale);
         }        
@@ -66,25 +79,26 @@ class Solution {
 
     private classifyQuadrant(position: number[]) {
         const [col, row] = position;
-        if (col < 51 && row < 52) {
-            console.log(position, ' -- ', 'quad1')
+        if (col < 50 && row < 51) {
             this.quad1++;
-        } else if (col > 51 && row < 52) {
-            console.log(position, ' -- ', 'quad2')
+        } else if (col > 50 && row < 51) {
             this.quad2++;
-        } else if (col < 51 && row > 52) {
-            console.log(position, ' -- ', 'quad3')
+        } else if (col < 50 && row > 51) {
             this.quad3++;
-        } else if (col > 51 && row > 52) {
-            console.log(position, ' -- ', 'quad4')
+        } else if (col > 50 && row > 51) {
             this.quad4++;
-        } else {
-            console.log(position, ' -- ', 'don\'t belong')
         }
     }
 
     public async solve() {
-        await this.createRobotMap();
+        let i = 0;
+        // setInterval( async () => {
+        //     await this.createRobotMap(i++);
+        // }, 100);
+
+        for (let i = 0; i < 1000000000; i++) {
+            await this.createRobotMap(i);
+        }
     }
 }
 
