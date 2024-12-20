@@ -6,9 +6,19 @@ export enum ParsingTypes {
     Array = "array",
 }
 
+enum Direction {
+    RIGHT = 'right',
+    LEFT = 'left',
+    UP = 'up',
+    DOWN = 'down'
+}
+
 class Solution {
     private matrix: string[][] = [];
-    private horseLocation: number[] = [0, 0];
+    private horseLocation: number[] = [0, 0]; // track horse location for moving within board
+    private horseDirection: Direction = Direction.UP;
+    private searchLocation: number[] = [0, 0]; // added member to search loops
+    private searchDirection: Direction = Direction.UP;
 
     async readFileAndParseTo(filename: string, parseTo: ParsingTypes) {
         if (parseTo === ParsingTypes.Matrix) {
@@ -37,203 +47,44 @@ class Solution {
         this.horseLocation = initialLocation;
     }
 
-    private exited(matrix: string[][], horseLocation: number[]) {
-        const row = horseLocation[0];
-        const column = horseLocation[1];
-        const cur = matrix[row][column];
-        return (cur === '<' && column === 0) || (cur === '>' && column === matrix[0].length - 1) || (cur === "^" && row === 0) || (cur === "v" && row === matrix.length - 1);
+    private withinBoundary(location: number[]): boolean {
+        const [row, col] = location;
+        return row >= 0 && row < 129 && col >= 0 && col < 129;
     }
 
-    countLoops(matrix: string[][]) {
-        while (!exited(matrix, this.horseLocation)) {
+    private addWall() {
+        if (this.horseDirection === Direction.UP) {
+            
+        }
+    }
+
+    private turnCornerOrMoveForward() {
+        const [row, col] = this.horseLocation;
+        const up = this.matrix[row-1][col];
+        const down = this.matrix[row+1][col];
+        const left = this.matrix[row][col-1];
+        const right = this.matrix[row][col+1];
+        if (this.horseDirection === Direction.UP && up === '#') {
+
+        } else if (this.horseDirection === Direction.LEFT && left === '#') {
+
+        } else if (this.horseDirection === Direction.RIGHT && right === '#') {
+
+        } else if (this.horseDirection === Direction.DOWN && down === '#') {
 
         }
     }
-}
 
-async function readFileAndParseTo(filename: string, parseTo: ParsingTypes) {
-    if (parseTo === ParsingTypes.Matrix) {
-        const matrix: string[][] = [];
-        const row: string[] = [];
-        const file = await fs.open(filename);
 
-        for await (const line of file.readLines()) {
-            let newRow = row.concat(line.split(""));
-            matrix.push(newRow);
+    public countLoops(matrix: string[][]) {
+        let count = 0;
+        let passedCorners: number[][] = [];
+        this.readFileAndParseTo('./day006input000.txt', ParsingTypes.Matrix)    // updates initial horse location and files into matrix map
+        while (this.withinBoundary(this.horseLocation)) {
+            this.addWall();
+            
         }
 
-        return matrix;
+        
     }
 }
-
-function exited(matrix: string[][], horseLocation: number[]) {
-    const row = horseLocation[0];
-    const column = horseLocation[1];
-    const cur = matrix[row][column];
-    return (cur === '<' && column === 0) || (cur === '>' && column === matrix[0].length - 1) || (cur === "^" && row === 0) || (cur === "v" && row === matrix.length - 1);
-}
-
-function keepMoving(matrix: string[][], horseLocation: number[]): string[][] {
-    const row = horseLocation[0];
-    const column = horseLocation[1];
-    const cur = matrix[row][column];
-    const left = matrix[row][column - 1];
-    const right = matrix[row][column + 1];
-    const up = matrix[row - 1][column];
-    const down = matrix[row + 1][column];
-    if (cur === '>' && right !== '#') {
-        matrix[row][column] = 'O'
-        matrix[row][column+1] = '>'
-    } else if (cur === '^' && up !== '#') {
-        matrix[row][column] = 'O'
-        matrix[row-1][column] = '^'
-    } else if (cur === '<' && left !== '#') {
-        matrix[row][column] = 'O'
-        matrix[row][column-1] = '<'
-    } else if (cur === 'v' && down !== '#') {
-        matrix[row][column] = 'O'
-        matrix[row+1][column] = 'v'
-    }
-    return matrix;
-}
-
-function moveUp(matrix: string[][], horseLocation: number[]): string[][] {
-    const row = horseLocation[0];
-    const column = horseLocation[1];
-    matrix[row][column] = '+';
-    matrix[row - 1][column] = '^';
-    return matrix;
-}
-
-function moveDown(matrix: string[][], horseLocation: number[]): string[][] {
-    const row = horseLocation[0];
-    const column = horseLocation[1];
-    matrix[row][column] = '+';
-    matrix[row + 1][column] = 'v';
-    return matrix;
-}
-
-function moveLeft(matrix: string[][], horseLocation: number[]): string[][] {
-    const row = horseLocation[0];
-    const column = horseLocation[1];
-    matrix[row][column] = '+';
-    matrix[row][column - 1] = '<';
-    return matrix;
-}
-
-function moveRight(matrix: string[][], horseLocation: number[]): string[][] {
-    const row = horseLocation[0];
-    const column = horseLocation[1];
-    matrix[row][column] = '+';
-    matrix[row][column + 1] = '>';
-    return matrix;
-}
-
-function hitWallOrMove(matrix: string[][], horseLocation: number[]): string[][]{
-    const row = horseLocation[0];
-    const column = horseLocation[1];
-    const cur = matrix[row][column];
-    const left = matrix[row][column - 1];
-    const right = matrix[row][column + 1];
-    const up = matrix[row - 1][column];
-    const down = matrix[row + 1][column];
-    if (up === '#' && cur === '^') {
-        return moveRight(matrix, horseLocation);
-    } else if (left === '#' && cur === '<') {
-        return moveUp(matrix, horseLocation);
-    } else if (right === '#' && cur === '>') {
-        return moveDown(matrix, horseLocation);
-    } else if (down === '#' && cur === 'v') {
-        return moveLeft(matrix, horseLocation);
-    } else {
-        return keepMoving(matrix, horseLocation);
-    }
-}
-
-function horseLooped(matrix: string[][], horseLocation: number[]): boolean {
-    const row = horseLocation[0];
-    const column = horseLocation[1];
-    const cur = matrix[row][column];
-    const left = matrix[row][column - 1];
-    const right = matrix[row][column + 1];
-    const up = matrix[row - 1][column];
-    const down = matrix[row + 1][column];
-    if (up === '+' && cur === '^') {
-        return true;
-    } else if (left === '+' && cur === '<') {
-        return true;
-    } else if (right === '+' && cur === '>') {
-        return true;
-    } else if (down === '+' && cur === 'v') {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function addWall(matrix: string[][], horseLocation: number[]): string[][] {
-    const row = horseLocation[0];
-    const column = horseLocation[1];
-    const cur = matrix[row][column];
-    if (cur === '^') {
-        matrix[row - 1][column] = '#';
-    } else if (cur === '<') {
-        matrix[row][column-1] = '#';
-    } else if (cur === '>') {
-        matrix[row][column+1] = '#';
-    } else if (cur === 'v') {
-        matrix[row+1][column] = '#';
-    } 
-    return matrix;
-}
-
-function runTheGame(matrix: string[][], horseLocation: number[]) {
-    
-    matrix = addWall(matrix, horseLocation);    // added a wall but do not want to add another wall. 
-    while (!exited(matrix, horseLocation)) {
-        matrix = hitWallOrMove(matrix, horseLocation);
-        const oldrow = horseLocation[0];
-        const oldcol = horseLocation[1];
-        const left = matrix[oldrow][oldcol - 1];
-        const right = matrix[oldrow][oldcol + 1];
-        const up = matrix[oldrow - 1][oldcol];
-        const down = matrix[oldrow + 1][oldcol];
-        if (left === '<') {
-            horseLocation = [oldrow, oldcol-1];
-        } else if (right === '>') {
-            horseLocation = [oldrow, oldcol+1];
-        } else if (up === '^') {
-            horseLocation = [oldrow-1, oldcol];
-        } else {
-            horseLocation = [oldrow+1, oldcol];
-        }
-    }
-    let numOs = 0;
-    for (let i = 0; i < matrix.length; i++) {
-        for (let j = 0; j < matrix[0].length; j++) {
-            if (matrix[i][j] === 'O') {
-                numOs++;
-            }
-        }
-    }
-    // consider edge case
-    numOs++;
-    console.log(numOs);
-}
-
-async function analyzeMatrix() {
-    const playBoard = await readFileAndParseTo("./day006/day006input000.txt", ParsingTypes.Matrix);
-    let initialLocation = [0, 0]; // row and column;
-    if (playBoard) {
-        for (let i = 0; i < playBoard.length; i++) {
-            if (playBoard[i].indexOf("^") !== -1) {
-                initialLocation[0] = i;
-                initialLocation[1] = playBoard[i].indexOf("^");
-            }
-        }
-        runTheGame(playBoard, initialLocation)
-    }
-
-;}
-
-analyzeMatrix();

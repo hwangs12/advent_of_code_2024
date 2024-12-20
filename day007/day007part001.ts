@@ -852,20 +852,12 @@ const numss = [[20261572812,98,138,31,2,666],
 [1077224,78,2,408,33,7,97]]
 
 let sum = 0;
-let toSub = [];
-let toDiv = [];
-let index = 0;
+let operations = []; // example ['*', '+']
 for (let nums of numss) {
-    let target = nums[0];
-    let arrCheck = nums.slice(1);
-    let sum = arrCheck.reduce((a, b) => a+b);
-    let product = arrCheck.reduce((a, b) => a*b);
-
-    if (product > target) {
-        product /= Math.min(product);
-        product += Math.min(product);
-        
-    }
+    let test = nums[0]
+    let rest = nums.slice(1, nums.length - 1);
+    let operVars = 2 ** (rest.length - 1);
+    // think there's way to express it maybe bin?
 }
 
 console.log(sum);
