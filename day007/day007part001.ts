@@ -1,6 +1,7 @@
 
 
-const numss = [[20261572812,98,138,31,2,666],
+const numss = [
+[20261572812,98,138,31,2,666],
 [45327,8,9,335,97,87],
 [829287,99,13,816,7,1,744,9],
 [231630061,460,2,33,93,500,1,52,8],
@@ -851,13 +852,48 @@ const numss = [[20261572812,98,138,31,2,666],
 [217602,6,2,1,4,5,730,2,2,552,4,2],
 [1077224,78,2,408,33,7,97]]
 
-let sum = 0;
+let awesomeTotal = 0;
 let operations = []; // example ['*', '+']
 for (let nums of numss) {
     let test = nums[0]
-    let rest = nums.slice(1, nums.length - 1);
-    let operVars = 2 ** (rest.length - 1);
-    // think there's way to express it maybe bin?
+    let rest = nums.slice(1, nums.length);
+    let index = 0;
+    let config = Array<number>(rest.length - 1).fill(0);
+    let multiIndex = 0;
+    let sum = 0;
+    let configCopy;
+    let restCopy = [...rest];
+    // ex [111000], [abcdefc] -> a*b*c+d+e+f+c [abc] [cdefc] 
+    while (!config.includes(2)) {
+        configCopy = [...config];
+        rest = [...restCopy];
+        while (config.indexOf(1, multiIndex) !== -1) {
+            index = config.indexOf(1, multiIndex);
+            rest.splice(index, 2, rest[index] * rest[index+1]);
+            config.splice(index, 1);
+        }
+        sum = 0;
+        for (let adds of rest) {
+            sum += adds
+        }
+        if (sum === test) {
+            console.log(test, ' is possible with config: ', JSON.stringify(configCopy), ' for ', JSON.stringify(restCopy));
+            awesomeTotal += test;
+            break;
+        } else {
+            config = [...configCopy];
+            config[config.length - 1] += 1
+            let carryIndex = config.indexOf(2);
+            while (carryIndex !== -1 && carryIndex > 0) {
+                config[carryIndex] = 0;
+                config[carryIndex - 1] += 1;
+                carryIndex = config.indexOf(2);
+            }
+        }
+        // then addition
+    }
+    if (sum !== test) {
+        console.log(test, ' is not possible with whatever config of ', JSON.stringify(restCopy));
+    }
 }
-
-console.log(sum);
+console.log('Total is --- ', awesomeTotal);
