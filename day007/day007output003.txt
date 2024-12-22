@@ -1,0 +1,10 @@
+190  is possible with config:  [1]  for  [10,19]
+3267  is possible with config:  [0,1]  for  [81,40,27]
+83  is not possible with whatever config of  [17,5]
+156  is possible with config:  [2]  for  [15,6]
+7290  is possible with config:  [1,2,1]  for  [6,8,6,15]
+161011  is not possible with whatever config of  [16,10,13]
+192  is possible with config:  [2,0]  for  [17,8,14]
+21037  is not possible with whatever config of  [9,7,18,13]
+292  is possible with config:  [0,1,0]  for  [11,6,16,20]
+Total is ---  11387

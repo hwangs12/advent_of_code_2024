@@ -865,18 +865,17 @@ for (let nums of numss) {
     let restCopy = [...rest];
     // ex [111000], [abcdefc] -> a*b*c+d+e+f+c [abc] [cdefc] 
     while (!config.includes(2)) {
-        configCopy = [...config];
         rest = [...restCopy];
-        while (config.indexOf(1, multiIndex) !== -1) {
-            index = config.indexOf(1, multiIndex);
-            rest.splice(index, 2, rest[index] * rest[index+1]);
-            config.splice(index, 1);
+        configCopy = [...config];
+        while (config.length > 0) {
+            if (config[0] === 0) {
+                rest.splice(0, 2, rest[0] + rest[1]);
+            } else {
+                rest.splice(0, 2, rest[0] * rest[1]);
+            }
+            config.splice(0, 1);
         }
-        sum = 0;
-        for (let adds of rest) {
-            sum += adds
-        }
-        if (sum === test) {
+        if (rest[0] === test) {
             console.log(test, ' is possible with config: ', JSON.stringify(configCopy), ' for ', JSON.stringify(restCopy));
             awesomeTotal += test;
             break;
@@ -892,7 +891,7 @@ for (let nums of numss) {
         }
         // then addition
     }
-    if (sum !== test) {
+    if (rest[0] !== test) {
         console.log(test, ' is not possible with whatever config of ', JSON.stringify(restCopy));
     }
 }
