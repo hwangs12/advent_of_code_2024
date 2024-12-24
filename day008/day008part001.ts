@@ -52,8 +52,8 @@ let map = [
 ]
 
 class Solution {
-    private rowMax = 49
-    private colMax = 49
+    private rowMax = 50
+    private colMax = 50
     private antMap = map;
     private mapToArr: string[][] = [];
     private memberList: string[] = [];
@@ -70,25 +70,24 @@ class Solution {
         for (const [key, coordinates] of Object.entries(this.memberToCoords)) {
             for (let i = 0; i < coordinates.length; i++) {
                 for (let j = i + 1; j < coordinates.length; j++) {
-                    this.antinodeCoordinate(coordinates[i], coordinates[j]);
+                    this.antinodeCoordinate(coordinates[i], coordinates[j], key);
                 }
             }
         }
-
+        // ISSUE: where antenaes are can be the same letter location. In this case, we don't place antenaes
         // convert map to array
         this.convertMapToArr();
 
         // map antinodes
         this.mapAntinodes();
-
-        console.log(this.arrayToString(this.mapToArr));
+        // console.log(this.antinodes.length);
         // override with the coordinates
-        for (const [key, coordinates] of Object.entries(this.memberToCoords)) {
-            for (const [row, col] of coordinates) {
-                this.mapToArr[row][col] = key;
-            }
-        }
-
+        // for (const [key, coordinates] of Object.entries(this.memberToCoords)) {
+        //     for (const [row, col] of coordinates) {
+        //         this.mapToArr[row][col] = key;
+        //     }
+        // }
+        
         // count antinodes
         for (const row of this.mapToArr) {
             for (const col of row) {
@@ -97,7 +96,9 @@ class Solution {
                 }
             }
         }
-        
+        console.log(this.antinodes);
+        console.log(this.arrayToString(this.mapToArr));
+        console.log(this.antinodeCount)
         // console.log(this.antinodeCount);
     }
 
@@ -123,7 +124,7 @@ class Solution {
         return bigstr;
     }
 
-    private antinodeCoordinate(coordA: number[], coordB: number[]): void {
+    private antinodeCoordinate(coordA: number[], coordB: number[], key: string): void {
         const [row1, col1] = coordA;
         const [row2, col2] = coordB;
         
@@ -136,11 +137,11 @@ class Solution {
         const [rowA, colA] = antinodeA;
         const [rowB, colB] = antinodeB;
 
-        if (this.coordinateWithinRange(rowA, colA)) {
+        if (this.coordinateWithinRange(rowA, colA) && (this.antMap[rowA][colA] === '.' || this.antMap[rowA][colA] !== key)) {
             this.antinodes.push(antinodeA);
         }
 
-        if (this.coordinateWithinRange(rowB, colB)) {
+        if (this.coordinateWithinRange(rowB, colB) && (this.antMap[rowB][colB] === '.' || this.antMap[rowB][colB] !== key)) {
             this.antinodes.push(antinodeB);
         }
     }
