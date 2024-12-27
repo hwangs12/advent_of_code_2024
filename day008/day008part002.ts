@@ -135,14 +135,14 @@ class Solution {
         
         let antinodeA = [row1 - jump * rowDiff, col1 - jump * colDiff];
         let antinodeB = [row2 + jump * rowDiff, col2 + jump * colDiff];
-        while (this.coordinateWithinRange(antinodeA[0], antinodeA[1]) && this.coordinateWithinRange(antinodeB[0], antinodeB[1])) {
+        while (this.coordinateWithinRange(antinodeA[0], antinodeA[1]) || this.coordinateWithinRange(antinodeB[0], antinodeB[1])) {
             const [rowA, colA] = antinodeA;
             const [rowB, colB] = antinodeB;
-            if (this.coordinateWithinRange(rowA, colA) && (this.antMap[rowA][colA] === '.' || this.antMap[rowA][colA] !== key)) {
+            if (this.coordinateWithinRange(rowA, colA) && (this.antMap[rowA][colA] === '.' || this.antMap[rowA][colA] !== key) && this.antMap[row1][col1] === '9') {
                 this.antinodes.push(antinodeA);
             }
             
-            if (this.coordinateWithinRange(rowB, colB) && (this.antMap[rowB][colB] === '.' || this.antMap[rowB][colB] !== key)) {
+            if (this.coordinateWithinRange(rowB, colB) && (this.antMap[rowB][colB] === '.' || this.antMap[rowB][colB] !== key) && this.antMap[row2][col2] === '9') {
                 this.antinodes.push(antinodeB);
             }
             jump++;
