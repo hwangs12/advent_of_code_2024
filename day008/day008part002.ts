@@ -138,11 +138,11 @@ class Solution {
         while (this.coordinateWithinRange(antinodeA[0], antinodeA[1]) || this.coordinateWithinRange(antinodeB[0], antinodeB[1])) {
             const [rowA, colA] = antinodeA;
             const [rowB, colB] = antinodeB;
-            if (this.coordinateWithinRange(rowA, colA) && (this.antMap[rowA][colA] === '.' || this.antMap[rowA][colA] !== key) && this.antMap[row1][col1] === '9') {
+            if (this.coordinateWithinRange(rowA, colA) && (this.antMap[rowA][colA] === '.' || this.antMap[rowA][colA] !== key)) {
                 this.antinodes.push(antinodeA);
             }
             
-            if (this.coordinateWithinRange(rowB, colB) && (this.antMap[rowB][colB] === '.' || this.antMap[rowB][colB] !== key) && this.antMap[row2][col2] === '9') {
+            if (this.coordinateWithinRange(rowB, colB) && (this.antMap[rowB][colB] === '.' || this.antMap[rowB][colB] !== key)) {
                 this.antinodes.push(antinodeB);
             }
             jump++;
