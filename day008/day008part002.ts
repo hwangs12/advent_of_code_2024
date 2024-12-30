@@ -98,6 +98,7 @@ class Solution {
         }
         console.log(this.antinodes);
         console.log(this.arrayToString(this.mapToArr));
+        // add the antinode and THE NUMBER OF KEY VALUES LEFT THERE ON THE MAP
         console.log(this.antinodeCount)
         // console.log(this.antinodeCount);
     }
