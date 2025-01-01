@@ -1,6 +1,12 @@
 // the rule is that i cannot put this only on top of dot or the carrot.
 import fs from "fs";
 
+const maxRow = 10;
+const maxCol = 10;
+const debugMode = false;
+const dirname = 'day006';
+const filename = 'sample.txt';
+const testfile = debugMode ? `${dirname}/${filename}` : filename
 enum Direction {
     RIGHT = 'right',
     LEFT = 'left',
@@ -21,9 +27,12 @@ class Solution {
     private loops: number = 0;
     private wallLocation: number[] = [];
     private wallCount: number = 0;
+    private isAtCorner: boolean = false;
+    private loopWalls: number[][] = [];
+    private visited: number[] = [];
 
     private readTxtFileAndChangeTo2DArray(): string[][] {
-        const file = fs.readFileSync('./day006/day006input000.txt', 'utf8');
+        const file = fs.readFileSync(`./${testfile}`, 'utf8');
         const array = file.split('\n').map((row) => row.split(''));
         return array
     }
@@ -63,18 +72,43 @@ class Solution {
 
     private isWithinRange(coordinate: number[]) {
         const [row, col] = coordinate;
-        if ((row === 129 && this.horseShape === 'v') || (col === 129 && this.horseShape === '>') || (row === 0 && this.horseShape === '^') || (col === 0 && this.horseShape === '<')) {
+        if ((row === maxRow - 1 && this.horseShape === 'v') || (col === maxCol - 1 && this.horseShape === '>') || (row === 0 && this.horseShape === '^') || (col === 0 && this.horseShape === '<')) {
             return false;
         }
-        return row >= 0 && row < 130 && col >= 0 && col < 130;
+        return row >= 0 && row < maxRow && col >= 0 && col < maxCol;
+    }
+
+    private wallIsPlaceable(coordinate: number[]) {
+        const [row, col] = coordinate;
+        if (row === 0 && this.horseShape === 'v') {
+            return true;
+        } else if (row === maxRow - 1 && this.horseShape === '^') {
+            return true;
+        } else if (col === 0 && this.horseShape === '>') {
+            return true;
+        } else if (col === maxCol-1 && this.horseShape === '<') {
+            return true;
+        } else {
+            return row > 0 && row < maxRow - 1 && col > 0 && col < maxCol - 1;
+        }
     }
 
     private isHorseAt(matrix: string[][], row: number, col: number): boolean {
         return matrix[row][col] === '^' || matrix[row][col] === '>' || matrix[row][col] === 'v' || matrix[row][col] === '<';
     }
 
-    private recordCorner(row: number, col: number) {
-        this.corners.push(row*1000 + col);
+    private recordCorner(row: number, col: number, horseShape: string) {
+        let multiplier = 0;
+        if (horseShape === '^') {
+            multiplier = 1;
+        } else if (horseShape === '>') {
+            multiplier = 2;
+        } else if (horseShape === 'v') {
+            multiplier = 3;
+        } else if (horseShape === '<') {
+            multiplier = 4;
+        }
+        this.corners.push((row*1000 + col)*multiplier);
     }
 
     private moveHorse(matrix: string[][]) {
@@ -89,42 +123,50 @@ class Solution {
             matrix[row][col] = '>';
             this.horseLocation = [row, col]
             this.horseShape = '>'
-            this.recordCorner(row, col)
+            this.recordCorner(row, col, this.horseShape)
+            
         } else if (right === '#' && horse === '>') {
             matrix[row][col] = 'v';
             this.horseLocation = [row, col]
             this.horseShape = 'v'
-            this.recordCorner(row, col)
+            this.recordCorner(row, col, this.horseShape)
+            
         } else if (down === '#' && horse === 'v') {
             matrix[row][col] = '<';
             this.horseLocation = [row, col]
             this.horseShape = '<'
-            this.recordCorner(row, col)
+            this.recordCorner(row, col, this.horseShape)
+            
         } else if (left === '#' && horse === '<') {
             matrix[row][col] = '^';
             this.horseLocation = [row, col]
             this.horseShape = '^'
-            this.recordCorner(row, col)
+            this.recordCorner(row, col,this.horseShape)
+            
         } else if (up === '.' && horse === '^') {
             matrix[row][col] = '.';
             matrix[row-1][col] = '^';
             this.horseLocation = [row-1, col]
             this.horseShape = '^'
+            
         } else if (right === '.' && horse === '>') {
             matrix[row][col] = '.';
             matrix[row][col+1] = '>';
             this.horseLocation = [row, col+1]
             this.horseShape = '>'
+            
         } else if (down === '.' && horse === 'v') {
             matrix[row][col] = '.';
             matrix[row+1][col] = 'v';
             this.horseLocation = [row+1, col]
             this.horseShape = 'v'
+            
         } else if (left === '.' && horse === '<') {
             matrix[row][col] = '.';
             matrix[row][col-1] = '<';
             this.horseLocation = [row, col-1]
             this.horseShape = '<'
+            
         }
 
         return matrix;
@@ -144,26 +186,49 @@ class Solution {
     }
     
     public countLoops() {
+        let iteratorParent = 0;
+        let iteratorChild = 0;
         let puzzleMap = this.readTxtFileAndChangeTo2DArray();
         this.saveHorseLocationAndShape(puzzleMap);
-        
-        while (this.isWithinRange(this.horseLocation)) {
+        while (this.isWithinRange(this.horseLocation) && this.wallIsPlaceable(this.horseLocation)) {
+            iteratorParent++;
             // put a wall if it's not placed already
-            puzzleMap = this.putWall(puzzleMap);
             let originalLocation = this.horseLocation;
+            this.visited.push(originalLocation[0]*1000+originalLocation[1]);
+            puzzleMap = this.putWall(puzzleMap);
             let originalHorseShape = this.horseShape;
+            if (this.wallCount !== 0 && this.visited.includes(this.wallLocation[0]*1000 + this.wallLocation[1])) {
+                puzzleMap = this.removeWallAndResetHorse(puzzleMap, originalHorseShape, originalLocation);
+                puzzleMap = this.moveHorse(puzzleMap);
+                continue;
+            }
             // move the horse
-            while (this.isWithinRange(this.horseLocation)) {
+            while (this.isWithinRange(this.horseLocation) && this.wallIsPlaceable(this.horseLocation)) {
                 puzzleMap = this.moveHorse(puzzleMap);
                 if (this.wallCount === 0) {
                     puzzleMap = this.putWall(puzzleMap);
                     originalHorseShape = this.horseShape;
                 }
-                if (this.corners[0] === this.horseLocation[0]*1000 + this.horseLocation[1] && this.corners.length >= 3) {
+                iteratorChild++;
+                console.log(this.wallLocation, ' --- ', originalLocation, ' --- ', this.horseLocation, ' --- ', this.loops);
+                let loopCandidateIndex1 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 1])
+                let loopCandidateIndex2 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 2])
+                let loopCandidateIndex3 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 3])
+                let loopCandidateIndex4 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 4])
+                let loopCandidateIndex5 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 5])
+                let loopCandidateIndex6 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 6])
+                let loopCandidateIndex7 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 7])
+                let loopCandidateIndex8 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 8])
+                let loopCandidateIndex9 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 9])
+                let loopCandidateIndex10 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 10])
+                if ((loopCandidateIndex1 - loopCandidateIndex2) === 1 && (loopCandidateIndex3 - loopCandidateIndex4) === 1 && (loopCandidateIndex5 - loopCandidateIndex6) === 1 && (loopCandidateIndex7 - loopCandidateIndex8) === 1 && (loopCandidateIndex9 - loopCandidateIndex10) === 1 && this.corners.length >= 4) {
+                    this.loopWalls.push(this.wallLocation);
                     this.loops++;
                     break;
                 }
             }
+            console.log('=================================>', this.loops);
+            iteratorChild = 0;
             this.corners = [];
             // remove wall and move back horse to its original location
             puzzleMap = this.removeWallAndResetHorse(puzzleMap, originalHorseShape, originalLocation);
