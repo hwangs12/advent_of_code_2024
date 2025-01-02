@@ -194,9 +194,15 @@ class Solution {
             iteratorParent++;
             // put a wall if it's not placed already
             let originalLocation = this.horseLocation;
-            this.visited.push(originalLocation[0]*1000+originalLocation[1]);
-            puzzleMap = this.putWall(puzzleMap);
+            if (this.visited[this.visited.length - 1] !== this.horseLocation[0]*1000+originalLocation[1]) {
+                this.visited.push(originalLocation[0]*1000+originalLocation[1]);
+            }
             let originalHorseShape = this.horseShape;
+            while (this.wallCount === 0) {
+                puzzleMap = this.moveHorse(puzzleMap);
+                puzzleMap = this.putWall(puzzleMap);
+                originalHorseShape = this.horseShape;
+            }
             if (this.wallCount !== 0 && this.visited.includes(this.wallLocation[0]*1000 + this.wallLocation[1])) {
                 puzzleMap = this.removeWallAndResetHorse(puzzleMap, originalHorseShape, originalLocation);
                 puzzleMap = this.moveHorse(puzzleMap);
@@ -205,10 +211,6 @@ class Solution {
             // move the horse
             while (this.isWithinRange(this.horseLocation) && this.wallIsPlaceable(this.horseLocation)) {
                 puzzleMap = this.moveHorse(puzzleMap);
-                if (this.wallCount === 0) {
-                    puzzleMap = this.putWall(puzzleMap);
-                    originalHorseShape = this.horseShape;
-                }
                 iteratorChild++;
                 console.log(this.wallLocation, ' --- ', originalLocation, ' --- ', this.horseLocation, ' --- ', this.loops);
                 let loopCandidateIndex1 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 1])
