@@ -1,11 +1,11 @@
 // the rule is that i cannot put this only on top of dot or the carrot.
 import fs from "fs";
 
-const maxRow = 10;
-const maxCol = 10;
-const debugMode = false;
+const maxRow = 4;
+const maxCol = 4;
+const debugMode = true;
 const dirname = 'day006';
-const filename = 'sample.txt';
+const filename = 'trial.txt';
 const testfile = debugMode ? `${dirname}/${filename}` : filename
 enum Direction {
     RIGHT = 'right',
@@ -199,9 +199,9 @@ class Solution {
             }
             let originalHorseShape = this.horseShape;
             while (this.wallCount === 0) {
-                puzzleMap = this.moveHorse(puzzleMap);
                 puzzleMap = this.putWall(puzzleMap);
                 originalHorseShape = this.horseShape;
+                puzzleMap = this.moveHorse(puzzleMap);
             }
             if (this.wallCount !== 0 && this.visited.includes(this.wallLocation[0]*1000 + this.wallLocation[1])) {
                 puzzleMap = this.removeWallAndResetHorse(puzzleMap, originalHorseShape, originalLocation);
@@ -213,17 +213,12 @@ class Solution {
                 puzzleMap = this.moveHorse(puzzleMap);
                 iteratorChild++;
                 console.log(this.wallLocation, ' --- ', originalLocation, ' --- ', this.horseLocation, ' --- ', this.loops);
-                let loopCandidateIndex1 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 1])
-                let loopCandidateIndex2 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 2])
-                let loopCandidateIndex3 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 3])
-                let loopCandidateIndex4 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 4])
-                let loopCandidateIndex5 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 5])
-                let loopCandidateIndex6 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 6])
-                let loopCandidateIndex7 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 7])
-                let loopCandidateIndex8 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 8])
-                let loopCandidateIndex9 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 9])
-                let loopCandidateIndex10 = this.corners.slice(0, -10).indexOf(this.corners[this.corners.length - 10])
-                if ((loopCandidateIndex1 - loopCandidateIndex2) === 1 && (loopCandidateIndex3 - loopCandidateIndex4) === 1 && (loopCandidateIndex5 - loopCandidateIndex6) === 1 && (loopCandidateIndex7 - loopCandidateIndex8) === 1 && (loopCandidateIndex9 - loopCandidateIndex10) === 1 && this.corners.length >= 4) {
+                let loopCandidateIndex1 = this.corners.slice(0, -4).indexOf(this.corners[this.corners.length - 1])
+                let loopCandidateIndex2 = this.corners.slice(0, -4).indexOf(this.corners[this.corners.length - 2])
+                let loopCandidateIndex3 = this.corners.slice(0, -4).indexOf(this.corners[this.corners.length - 3])
+                let loopCandidateIndex4 = this.corners.slice(0, -4).indexOf(this.corners[this.corners.length - 4])
+                
+                if ((loopCandidateIndex1 - loopCandidateIndex2) === 1 && (loopCandidateIndex2 - loopCandidateIndex3) === 1 && (loopCandidateIndex3 - loopCandidateIndex4) === 1) {
                     this.loopWalls.push(this.wallLocation);
                     this.loops++;
                     break;
