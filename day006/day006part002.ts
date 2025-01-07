@@ -1,11 +1,11 @@
 // the rule is that i cannot put this only on top of dot or the carrot.
 import fs from "fs";
 
-const maxRow = 3;
-const maxCol = 6;
-const debugMode = true;
+const maxRow = 130;
+const maxCol = 130;
+const debugMode = false;
 const dirname = 'day006';
-const filename = 'trial5.txt';
+const filename = 'day006input000.txt';
 const testfile = debugMode ? `${dirname}/${filename}` : filename
 enum Direction {
     RIGHT = 'right',
