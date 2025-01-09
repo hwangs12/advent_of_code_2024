@@ -212,7 +212,7 @@ class Solution {
             while (this.isWithinRange(this.horseLocation) && this.wallIsPlaceable(this.horseLocation)) {
                 puzzleMap = this.moveHorse(puzzleMap);
                 iteratorChild++;
-                console.log(this.wallLocation, ' --- ', originalLocation, ' --- ', this.horseLocation, ' --- ', this.loops);
+                // console.log(this.wallLocation, ' --- ', originalLocation, ' --- ', this.horseLocation, ' --- ', this.loops);
                 let loopCandidateIndex1 = this.corners.slice(0, -4).indexOf(this.corners[this.corners.length - 1])
                 let loopCandidateIndex2 = this.corners.slice(0, -4).indexOf(this.corners[this.corners.length - 2])
                 let loopCandidateIndex3 = this.corners.slice(0, -4).indexOf(this.corners[this.corners.length - 3])
