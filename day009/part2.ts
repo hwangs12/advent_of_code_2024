@@ -10,7 +10,7 @@ import path from 'path';
 
 class Solution {
     private readFileConvertToString() {
-        return fs.readFileSync(path.resolve('./input.txt'), 'utf8');
+        return fs.readFileSync(path.resolve('./sample.txt'), 'utf8');
     }
 
     public solve () {
@@ -27,28 +27,67 @@ class Solution {
             let newArr = prev.concat(cur);
             return newArr;
         }, []);
-
-        // fill the dots from left to right from the rightmost item
-        while (fileArray[fileArray.length - 1] === '.') {
-            fileArray.pop();
+        console.log(fileArray)
+        // create summary array where dot is summarized by the count and location
+        // ex {count: 3, index: 0}
+        let dotSummary: {count: number, index: number}[] = [];
+        let dotElement = {index: 0, count: 0}
+        for (let [index, val] of fileArray.entries()) {
+            if (val === '.' && dotElement.count === 0) {
+                dotElement.count++;
+                dotElement.index = index;
+            } else if (val === '.' && dotElement.count !== 0) {
+                dotElement.count++;
+            } else if (val !== '.' && dotElement.count === 0) {
+                continue;
+            } else {
+                const elementCopy = {...dotElement};
+                dotSummary.push(elementCopy);
+                dotElement.count = 0;
+                dotElement.index = 0;
+            }
         }
-        for (let i = 0; i < fileArray.length; i++) {
-            if (fileArray[i] === '.') {
-                fileArray[i] = fileArray[fileArray.length - 1];
-                fileArray.pop()
-                while (fileArray[fileArray.length - 1] === '.') {
-                    fileArray.pop();
+
+        // last element push to dotSummary
+        dotSummary.push({...dotElement})
+
+        console.log(dotSummary)
+        // number summary
+        let numSummary: {number: number, count: number}[] = []
+        let numElement = {number: -1, count: 0}
+        for (let [index, val] of fileArray.entries()) {
+            if (val !== '.' && numElement.number === -1) {
+                numElement.number = val as number;
+                numElement.count++
+            } else if (val !== '.' && numElement.number === fileArray[index]) {
+                numElement.count++
+            } else if (val === '.') {
+                continue;
+            } else {
+                const numElCopy = {...numElement}
+                numSummary.push(numElCopy);
+                numElement.count = 1;
+                numElement.number = val as number;
+            }
+        }
+        numSummary.push(numElement);
+
+        numSummary.reverse();
+
+        console.log(numSummary)
+
+        let numIndex = numSummary.length - 1;
+
+        for (let i = 0; i < dotSummary.length; i++) {
+            for (let j = 0; j < numSummary.length; j++) {
+                if (numSummary[j].count <= dotSummary[i].count) {
+                    
                 }
             }
         }
 
-        // provide sum
-        const heysum = fileArray.reduce((prev, cur, index) => {
-            let sum = Number(cur) * index + Number(prev)
-            return sum
-        }, 0)
 
-        console.log(heysum);
+        
     }
 }
 
