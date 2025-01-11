@@ -74,17 +74,62 @@ class Solution {
 
         numSummary.reverse();
 
-        console.log(numSummary)
+        for (let i = 0; i < numSummary.length; i++) {
+            console.log(fileArray);
+            for (let j = 0; j < dotSummary.length; j++) {
+                if (fileArray.indexOf(numSummary[i].number) < dotSummary[j].index) {
+                    break;
+                }
 
-        let numIndex = numSummary.length - 1;
+                if (numSummary[i].count <= dotSummary[j].count) {
+                    // move file to the space available
+                    fileArray.fill('.', fileArray.indexOf(numSummary[i].number), fileArray.indexOf(numSummary[i].number) + numSummary[i].count)
+                    fileArray.fill(numSummary[i].number, dotSummary[j].index, dotSummary[j].index + numSummary[i].count)
 
-        for (let i = 0; i < dotSummary.length; i++) {
-            for (let j = 0; j < numSummary.length; j++) {
-                if (numSummary[j].count <= dotSummary[i].count) {
-                    
+                    // update space left
+                    dotSummary[j].count = dotSummary[j].count - numSummary[i].count
+
+                    // update dot location after space has been filled
+                    dotSummary[j].index = dotSummary[j].index + numSummary[i].count
+
+                    // update count for number that's moved.
+                    numSummary[i].count = 0;
+
+                    break;
                 }
             }
         }
+
+        /* for (let i = 0; i < dotSummary.length; i++) {
+            for (let j = 0; j < numSummary.length; j++) {
+                if (fileArray.indexOf(numSummary[j].number) < dotSummary[i].index) {
+                    break;
+                }
+
+                if (numSummary[j].count === 0) {
+                    continue;
+                }
+
+                if (numSummary[j].count <= dotSummary[i].count) {
+                    // move file to the space available
+                    fileArray.fill('.', fileArray.indexOf(numSummary[j].number), fileArray.indexOf(numSummary[j].number) + numSummary[j].count)
+                    fileArray.fill(numSummary[j].number, dotSummary[i].index, dotSummary[i].index + numSummary[j].count)
+
+                    // update space left
+                    dotSummary[i].count = dotSummary[i].count - numSummary[j].count
+
+                    // update dot location after space has been filled
+                    dotSummary[i].index = dotSummary[i].index + numSummary[j].count
+
+                    // update count for number that's moved.
+                    numSummary[j].count = 0;
+                } else {
+                    continue;
+                }
+            }
+        } */
+
+        console.log(fileArray)
 
 
         
