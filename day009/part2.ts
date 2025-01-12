@@ -10,7 +10,7 @@ import path from 'path';
 
 class Solution {
     private readFileConvertToString() {
-        return fs.readFileSync(path.resolve('./sample.txt'), 'utf8');
+        return fs.readFileSync(path.resolve('./input.txt'), 'utf8');
     }
 
     public solve () {
@@ -27,7 +27,7 @@ class Solution {
             let newArr = prev.concat(cur);
             return newArr;
         }, []);
-        console.log(fileArray)
+        // console.log(fileArray)
         // create summary array where dot is summarized by the count and location
         // ex {count: 3, index: 0}
         let dotSummary: {count: number, index: number}[] = [];
@@ -74,9 +74,12 @@ class Solution {
 
         numSummary.reverse();
 
+        console.log(numSummary);
+
         for (let i = 0; i < numSummary.length; i++) {
-            console.log(fileArray);
+            // console.log(fileArray);
             for (let j = 0; j < dotSummary.length; j++) {
+                // console.log(i, j, ' !!!!!!')
                 if (fileArray.indexOf(numSummary[i].number) < dotSummary[j].index) {
                     break;
                 }
@@ -129,8 +132,17 @@ class Solution {
             }
         } */
 
-        console.log(fileArray)
+        // console.log(fileArray)
 
+        const heysum = fileArray.reduce((prev, cur, index) => {
+            if (cur === '.') {
+                return prev;
+            }
+            let sum = Number(cur) * index + Number(prev)
+            return sum
+        }, 0)
+
+        console.log(heysum);
 
         
     }
