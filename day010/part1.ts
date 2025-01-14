@@ -5,7 +5,7 @@ class Solution {
     private trailheads: number[][] = [];
     private summits: number[][] = [];
     private trailCandidates: Record<string, number[][]> = {};
-    private hikingTrails: number[][] = [];
+    private hikingTrails: string[] = [];
     private rowMax = 0;
     private colMax = 0;
     
@@ -58,40 +58,59 @@ class Solution {
         return this.trailCandidates;
     }
 
-    private isHikingTrail(trailhead: number[]) {
+    private listOfHikingTrails(trailhead: number[]) {
         const [row, col] = trailhead;
         const uphill = this.fullmap[row][col] + 1;
         const down = row < this.rowMax ? this.fullmap[row+1][col] : null
         const up = row > 0 ? this.fullmap[row-1][col] : null
         const right = col < this.colMax ? this.fullmap[row][col+1] : null;
         const left = col > 0 ? this.fullmap[row][col-1] : null;
-        if (down && down === uphill) {
-            if (uphill === 9) {
-                this.hikingTrails.push([row+1, col])
-            } else {
-                this.isHikingTrail([row+1, col])
-            }
-        } else if (up && up === uphill) {
-            if (uphill === 9) {
-                this.hikingTrails.push([row-1, col])
-            } else {
-                this.isHikingTrail([row-1, col])
-            }
-        } else if (right && right === uphill) {
-            if (uphill === 9) {
-                this.hikingTrails.push([row, col+1])
-            } else {
-                this.isHikingTrail([row, col+1])
-            }
-        } else if (left && left === uphill) {
-            if (uphill === 9) {
-                this.hikingTrails.push([row, col-1])
-            } else {
-                this.isHikingTrail([row, col-1])
-            }
-        } else {
-            return false;
+        
+        if (up !== uphill && right !== uphill && down !== uphill && left !== uphill) {
+            return;
         }
+
+        if (down && down === uphill) {
+            if (down === 9 && !this.hikingTrails.includes(JSON.stringify([row+1, col]))) {
+                this.hikingTrails.push(JSON.stringify([row+1, col]))
+            } else if (down === 9 && this.hikingTrails.includes(JSON.stringify([row+1, col]))) {
+                return;
+            } else {
+                this.listOfHikingTrails([row+1, col])
+            }
+        }
+
+        if (up && up === uphill) {
+            if (up === 9 && !this.hikingTrails.includes(JSON.stringify([row-1, col]))) {
+                this.hikingTrails.push(JSON.stringify([row-1, col]))
+            } else if (up === 9 && this.hikingTrails.includes(JSON.stringify([row-1, col]))) {
+                return;
+            } else {
+                this.listOfHikingTrails([row-1, col])
+            }
+        }
+
+        if (right && right === uphill) {
+            if (right === 9 && !this.hikingTrails.includes(JSON.stringify([row, col+1]))) {
+                this.hikingTrails.push(JSON.stringify([row, col+1]))
+            } else if (right === 9 && this.hikingTrails.includes(JSON.stringify([row, col+1]))) {
+                return;
+            } else {
+                this.listOfHikingTrails([row, col+1])
+            }
+        }
+
+        if (left && left === uphill) {
+            if (left === 9 && !this.hikingTrails.includes(JSON.stringify([row, col-1]))) {
+                this.hikingTrails.push(JSON.stringify([row, col-1]))
+            } else if (left === 9 && this.hikingTrails.includes(JSON.stringify([row, col-1]))) {
+                return;
+            } else {
+                this.listOfHikingTrails([row, col-1])
+            }
+        }
+
+        
     }
 
     public solve() {
@@ -103,7 +122,16 @@ class Solution {
 
         this.mapHikingCandidates(this.trailheads, this.summits)
 
-        this.isHikingTrail([0, 2]);
+        let total = 0;
+
+        for (const trailhead of this.trailheads) {
+            this.listOfHikingTrails(trailhead);
+            total += this.hikingTrails.length
+            this.hikingTrails = [];
+        }
+
+        console.log(total);
+        
     }
 }
 
