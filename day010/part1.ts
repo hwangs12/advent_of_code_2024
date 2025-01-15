@@ -74,7 +74,7 @@ class Solution {
             if (down === 9 && !this.hikingTrails.includes(JSON.stringify([row+1, col]))) {
                 this.hikingTrails.push(JSON.stringify([row+1, col]))
             } else if (down === 9 && this.hikingTrails.includes(JSON.stringify([row+1, col]))) {
-                return;
+                
             } else {
                 this.listOfHikingTrails([row+1, col])
             }
@@ -84,7 +84,7 @@ class Solution {
             if (up === 9 && !this.hikingTrails.includes(JSON.stringify([row-1, col]))) {
                 this.hikingTrails.push(JSON.stringify([row-1, col]))
             } else if (up === 9 && this.hikingTrails.includes(JSON.stringify([row-1, col]))) {
-                return;
+                
             } else {
                 this.listOfHikingTrails([row-1, col])
             }
@@ -94,7 +94,7 @@ class Solution {
             if (right === 9 && !this.hikingTrails.includes(JSON.stringify([row, col+1]))) {
                 this.hikingTrails.push(JSON.stringify([row, col+1]))
             } else if (right === 9 && this.hikingTrails.includes(JSON.stringify([row, col+1]))) {
-                return;
+                
             } else {
                 this.listOfHikingTrails([row, col+1])
             }
@@ -104,18 +104,18 @@ class Solution {
             if (left === 9 && !this.hikingTrails.includes(JSON.stringify([row, col-1]))) {
                 this.hikingTrails.push(JSON.stringify([row, col-1]))
             } else if (left === 9 && this.hikingTrails.includes(JSON.stringify([row, col-1]))) {
-                return;
+                
             } else {
                 this.listOfHikingTrails([row, col-1])
             }
         }
 
-        
+        return;
     }
 
     public solve() {
         // convert file to num matrix;s
-        this.fullmap = this.fileToNumArray('sample.txt');
+        this.fullmap = this.fileToNumArray('input.txt');
         
         // update coordinates 
         this.getTrailheadsAndSummits(this.fullmap);
@@ -126,6 +126,7 @@ class Solution {
 
         for (const trailhead of this.trailheads) {
             this.listOfHikingTrails(trailhead);
+            console.log(trailhead, ': ', this.hikingTrails, ' ==> total: ', this.hikingTrails.length)
             total += this.hikingTrails.length
             this.hikingTrails = [];
         }
