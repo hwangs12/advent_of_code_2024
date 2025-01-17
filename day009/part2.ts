@@ -89,7 +89,7 @@ class Solution {
                     fileArray.fill('.', fileArray.indexOf(numSummary[i].number), fileArray.indexOf(numSummary[i].number) + numSummary[i].count)
                     fileArray.fill(numSummary[i].number, dotSummary[j].index, dotSummary[j].index + numSummary[i].count)
 
-                    // update space left
+                 // update space left
                     dotSummary[j].count = dotSummary[j].count - numSummary[i].count
 
                     // update dot location after space has been filled
