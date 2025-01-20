@@ -9,8 +9,8 @@ class Solution {
         });
     }
 
-    private convertCoordinateToNumber(coordinate: number[]) {
-        return coordinate[0] * 1000 + coordinate[1];
+    private convertCoordinateToNumber(row: number, col: number) {
+        return row * 1000 + col;
     }
 
     private convertNumberToCoordinate(num: number) {
@@ -18,11 +18,22 @@ class Solution {
     }
 
     /* Collection of each letter coordinate first appearing in the loop from left to right, top to bottom  */
-    private collectLetterCoordinates() {
-        
+    private collectLetterCoordinates(areaMap: string[][]) {
+        for (let row=0; row < areaMap.length; row++) {
+            for (let col=0; col < areaMap[row].length; col++) {
+                if (this.letterCoordinates[areaMap[row][col]]) {
+                    continue;
+                } 
+                this.letterCoordinates[areaMap[row][col]] = this.convertCoordinateToNumber()
+            }
+        }
     }
 
     private getArea(startingCoordinate: number) {
+
+    }
+
+    private getPerimeter(startingCoordinate: number) {
 
     }
 
