@@ -24,7 +24,7 @@ class Solution {
                 if (this.letterCoordinates[areaMap[row][col]]) {
                     continue;
                 } 
-                this.letterCoordinates[areaMap[row][col]] = this.convertCoordinateToNumber()
+                this.letterCoordinates[areaMap[row][col]] = this.convertCoordinateToNumber(row, col);
             }
         }
     }
@@ -38,7 +38,9 @@ class Solution {
     }
 
     public solve() {
-
+        this.map = this.fileToArray('sample.txt');
+        this.collectLetterCoordinates(this.map);
+        console.log(this.letterCoordinates)
     }
 }
 
