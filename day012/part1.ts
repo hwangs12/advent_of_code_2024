@@ -2,7 +2,7 @@ import fs from 'fs'
 
 class Solution {
     private map: string[][] = []
-    private letterCoordinates: Record<string, number> = {}
+    private letterCoordinates: Record<string, number[]> = {}
     private fileToArray(filename: string) {
        return fs.readFileSync(filename, 'utf8').split('\n').map((line) => {
             return line.split('')
@@ -17,11 +17,22 @@ class Solution {
         return [Math.floor(num/1000), num % 1000]
     }
 
+    private neighborIsSame(row: number, col: number): boolean {
+        const coordinateUnderInvestigation = this.map[row][col]
+        const up = this.map[row-1][col]
+        const right = this.map[row][col+1]
+        const down
+        const left
+    }
+
     /* Collection of each letter coordinate first appearing in the loop from left to right, top to bottom  */
     private collectLetterCoordinates(areaMap: string[][]) {
         for (let row=0; row < areaMap.length; row++) {
             for (let col=0; col < areaMap[row].length; col++) {
                 if (this.letterCoordinates[areaMap[row][col]]) {
+                    if (this.neighborIsSame(row, col)) {
+
+                    }
                     continue;
                 } 
                 this.letterCoordinates[areaMap[row][col]] = this.convertCoordinateToNumber(row, col);
