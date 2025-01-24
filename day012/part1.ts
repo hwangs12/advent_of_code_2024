@@ -5,7 +5,6 @@ class Solution {
     private maxRow: number = 0;
     private maxCol: number = 0;
     private letterCoordinates: Record<string, number[]> = {};
-    private pathTrackingRoutes: number[];
     private visited: number[] = [];
     private fileToArray(filename: string) {
         return fs
@@ -30,9 +29,7 @@ class Solution {
         const right = col < this.maxCol - 1 ? this.map[row][col + 1] : null;
         const down = row < this.maxRow - 1 ? this.map[row + 1][col] : null;
         const left = col > 0 ? this.map[row][col - 1] : null;
-        if (coordinateUnderInvestigation === up) {
-            this.pathTrackingRoutes;
-        }
+        
 
         return coordinateUnderInvestigation !== up && coordinateUnderInvestigation !== left;
     }
@@ -53,22 +50,26 @@ class Solution {
             return 1;
         }
         // surrounding config:
+        let ma = 0;
+        let mi = 0;
+        let mo = 0;
+        let mu = 0;
         if (current === up && !this.visited.includes(this.convertCoordinateToNumber(row - 1, col))) {
-            return 1 + this.getArea(row - 1, col);
+            ma = 1 + this.getArea(row - 1, col);
         } 
         
         if (current === right && !this.visited.includes(this.convertCoordinateToNumber(row, col + 1))) {
-            return 1 + this.getArea(row, col + 1);
+            mi = 1 + this.getArea(row, col + 1);
         } 
         
         if (current === down && !this.visited.includes(this.convertCoordinateToNumber(row + 1, col))) {
-            return 1 + this.getArea(row + 1, col);
+            mo = 1 + this.getArea(row + 1, col);
         } 
         
         if (current === left && !this.visited.includes(this.convertCoordinateToNumber(row, col - 1))) {
-            return 1 + this.getArea(row, col - 1);
+            mu = 1 + this.getArea(row, col - 1);
         } 
-        return 0;
+        return ma + mi + mo + mu - 1;
     }
 
     /* Collection of each letter coordinate first appearing in the loop from left to right, top to bottom  */
