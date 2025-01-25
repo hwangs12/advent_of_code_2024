@@ -1,11 +1,19 @@
 import fs from "fs";
 
+interface Summary {
+    area: number
+    perimeter: number;
+    letter: string;
+}
+
 class Solution {
     private map: string[][] = [];
     private maxRow: number = 0;
     private maxCol: number = 0;
     private letterCoordinates: Record<string, number[]> = {};
     private visited: number[] = [];
+    private areaSummary: Record<string, Summary> = {};
+    private perimeter: number = 0;
     private fileToArray(filename: string) {
         return fs
             .readFileSync(filename, "utf8")
@@ -41,6 +49,8 @@ class Solution {
         const right = col < this.maxCol - 1 ? this.map[row][col + 1] : null;
         const down = row < this.maxRow - 1 ? this.map[row + 1][col] : null;
         const left = col > 0 ? this.map[row][col - 1] : null;
+        const perimeterHelper = [current !== up, current !== right, current !== down, current !== left]
+        this.perimeter += perimeterHelper.filter(item => item === true).length;
         if (
             (this.visited.includes(this.convertCoordinateToNumber(row - 1, col)) || current !== up) &&
             (this.visited.includes(this.convertCoordinateToNumber(row, col + 1)) || current !== right) &&
@@ -55,21 +65,21 @@ class Solution {
         let mo = 0;
         let mu = 0;
         if (current === up && !this.visited.includes(this.convertCoordinateToNumber(row - 1, col))) {
-            ma = 1 + this.getArea(row - 1, col);
+            ma = this.getArea(row - 1, col);
         } 
         
         if (current === right && !this.visited.includes(this.convertCoordinateToNumber(row, col + 1))) {
-            mi = 1 + this.getArea(row, col + 1);
+            mi = this.getArea(row, col + 1);
         } 
         
         if (current === down && !this.visited.includes(this.convertCoordinateToNumber(row + 1, col))) {
-            mo = 1 + this.getArea(row + 1, col);
+            mo = this.getArea(row + 1, col);
         } 
         
         if (current === left && !this.visited.includes(this.convertCoordinateToNumber(row, col - 1))) {
-            mu = 1 + this.getArea(row, col - 1);
+            mu = this.getArea(row, col - 1);
         } 
-        return ma + mi + mo + mu - 1;
+        return ma + mi + mo + mu + 1;
     }
 
     /* Collection of each letter coordinate first appearing in the loop from left to right, top to bottom  */
@@ -84,15 +94,16 @@ class Solution {
         }
     }
 
-    private getPerimeter(startingCoordinate: number) {}
-
     public solve() {
         this.map = this.fileToArray("sample.txt");
         this.maxRow = this.map.length - 1;
         this.maxCol = this.map[0].length - 1;
         this.collectLetterCoordinates(this.map);
-        const area = this.getArea(0, 0);
-        console.log(area);
+        console.log(this.letterCoordinates)
+        // const area = this.getArea(0, 0);
+
+        // console.log(area);
+        // console.log(this.perimeter)
     }
 }
 
