@@ -1,7 +1,7 @@
 import fs from "fs";
 
 interface Summary {
-    area: number
+    area: number;
     perimeter: number;
     letter: string;
 }
@@ -12,8 +12,11 @@ class Solution {
     private maxCol: number = 0;
     private letterCoordinates: Record<string, number[]> = {};
     private visited: number[] = [];
-    private areaSummary: Record<string, Summary> = {};
+    private summary: Record<string, Summary> = {};
     private perimeter: number = 0;
+    private nextInQueue: number[] = [0];
+
+
     private fileToArray(filename: string) {
         return fs
             .readFileSync(filename, "utf8")
@@ -37,20 +40,36 @@ class Solution {
         const right = col < this.maxCol - 1 ? this.map[row][col + 1] : null;
         const down = row < this.maxRow - 1 ? this.map[row + 1][col] : null;
         const left = col > 0 ? this.map[row][col - 1] : null;
-        
 
         return coordinateUnderInvestigation !== up && coordinateUnderInvestigation !== left;
     }
 
-    public getArea(row: number, col: number): number {
+    public getAreaAndPerimeter(row: number, col: number): number {
         const current = this.map[row][col];
         this.visited.push(this.convertCoordinateToNumber(row, col));
         const up = row > 0 ? this.map[row - 1][col] : null;
-        const right = col < this.maxCol - 1 ? this.map[row][col + 1] : null;
-        const down = row < this.maxRow - 1 ? this.map[row + 1][col] : null;
+        const right = col < this.maxCol ? this.map[row][col + 1] : null;
+        const down = row < this.maxRow ? this.map[row + 1][col] : null;
         const left = col > 0 ? this.map[row][col - 1] : null;
-        const perimeterHelper = [current !== up, current !== right, current !== down, current !== left]
-        this.perimeter += perimeterHelper.filter(item => item === true).length;
+        const perimeterHelper = [current !== up, current !== right, current !== down, current !== left];
+        this.perimeter += perimeterHelper.filter((item) => item === true).length;
+
+        if (up && up !== current && !this.nextInQueue.includes(this.convertCoordinateToNumber(row - 1, col))) {
+
+        }
+
+        if (right && right !== current && !this.nextInQueue.includes(this.convertCoordinateToNumber(row, col + 1))) {
+
+        }
+
+        if (down && down !== current && !this.nextInQueue.includes(this.convertCoordinateToNumber(row + 1, col))) {
+
+        }
+
+        if (left && left !== current && !this.nextInQueue.includes(this.convertCoordinateToNumber(row, col - 1))) {
+
+        }
+
         if (
             (this.visited.includes(this.convertCoordinateToNumber(row - 1, col)) || current !== up) &&
             (this.visited.includes(this.convertCoordinateToNumber(row, col + 1)) || current !== right) &&
@@ -65,20 +84,20 @@ class Solution {
         let mo = 0;
         let mu = 0;
         if (current === up && !this.visited.includes(this.convertCoordinateToNumber(row - 1, col))) {
-            ma = this.getArea(row - 1, col);
-        } 
-        
+            ma = this.getAreaAndPerimeter(row - 1, col);
+        }
+
         if (current === right && !this.visited.includes(this.convertCoordinateToNumber(row, col + 1))) {
-            mi = this.getArea(row, col + 1);
-        } 
-        
+            mi = this.getAreaAndPerimeter(row, col + 1);
+        }
+
         if (current === down && !this.visited.includes(this.convertCoordinateToNumber(row + 1, col))) {
-            mo = this.getArea(row + 1, col);
-        } 
-        
+            mo = this.getAreaAndPerimeter(row + 1, col);
+        }
+
         if (current === left && !this.visited.includes(this.convertCoordinateToNumber(row, col - 1))) {
-            mu = this.getArea(row, col - 1);
-        } 
+            mu = this.getAreaAndPerimeter(row, col - 1);
+        }
         return ma + mi + mo + mu + 1;
     }
 
@@ -88,7 +107,7 @@ class Solution {
             for (let col = 0; col < areaMap[row].length; col++) {
                 if (this.letterCoordinates[areaMap[row][col]] && this.letterCoordinates[areaMap[row][col]].length > 0) {
                     continue;
-                }
+                } 
                 this.letterCoordinates[areaMap[row][col]] = [this.convertCoordinateToNumber(row, col)];
             }
         }
@@ -99,11 +118,28 @@ class Solution {
         this.maxRow = this.map.length - 1;
         this.maxCol = this.map[0].length - 1;
         this.collectLetterCoordinates(this.map);
-        console.log(this.letterCoordinates)
-        // const area = this.getArea(0, 0);
+        console.log(this.letterCoordinates);
+        // const area = this.getAreaAndPerimeter(0, 0);
 
         // console.log(area);
         // console.log(this.perimeter)
+
+        // below is the plan to execute
+        for (const coords of Object.values(this.letterCoordinates)) {
+            for (const coordinate of coords) {
+                const row = this.convertNumberToCoordinate(coordinate)[0];
+                const col = this.convertNumberToCoordinate(coordinate)[1];
+                this.summary[this.map[row][col]] = {
+                    letter: this.map[row][col],
+                    area: this.getAreaAndPerimeter(row, col),
+                    perimeter: this.perimeter,
+                };
+            }
+            this.perimeter = 0;
+        }
+
+        console.log(this.summary);
+        console.log(this.map);
     }
 }
 
