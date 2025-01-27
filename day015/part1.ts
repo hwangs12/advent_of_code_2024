@@ -482,7 +482,25 @@ enum Direction {
     LEFT = '<'
 }
 
+enum MapObject {
+    WALL = '#',
+    ROBOT = '@',
+    ROAD = '.',
+    BOX = 'O'
+}
+
 class Solution {
+    private getRobotCoordinate(map: string[][]): number[] {
+        for (const [row, rowVal] of map.entries()) {
+            for (const [col, colVal] of rowVal.entries()) {
+                if (colVal === MapObject.ROBOT) {
+                    return [row, col];
+                }
+            }
+        }
+        return [0, 0];
+    }
+
     private fileToArray(filename: string) {
             return fs
                 .readFileSync(filename, "utf8")
@@ -493,7 +511,8 @@ class Solution {
     }
 
     public solve() {
-        
+        const [row, col] = this.getRobotCoordinate(map);
+        console.log(row, col);
     }
 }
 
