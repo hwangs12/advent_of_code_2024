@@ -6,6 +6,11 @@ interface Summary {
     letter: string;
 }
 
+interface LetterQueue {
+    letter: string;
+    coordinate: number;
+}
+
 class Solution {
     private map: string[][] = [];
     private maxRow: number = 0;
@@ -14,7 +19,7 @@ class Solution {
     private visited: number[] = [];
     private summary: Record<string, Summary> = {};
     private perimeter: number = 0;
-    private nextInQueue: number[] = [0];
+    private nextInQueue: LetterQueue[] = [];
 
 
     private fileToArray(filename: string) {
@@ -53,22 +58,6 @@ class Solution {
         const left = col > 0 ? this.map[row][col - 1] : null;
         const perimeterHelper = [current !== up, current !== right, current !== down, current !== left];
         this.perimeter += perimeterHelper.filter((item) => item === true).length;
-
-        if (up && up !== current && !this.nextInQueue.includes(this.convertCoordinateToNumber(row - 1, col))) {
-
-        }
-
-        if (right && right !== current && !this.nextInQueue.includes(this.convertCoordinateToNumber(row, col + 1))) {
-
-        }
-
-        if (down && down !== current && !this.nextInQueue.includes(this.convertCoordinateToNumber(row + 1, col))) {
-
-        }
-
-        if (left && left !== current && !this.nextInQueue.includes(this.convertCoordinateToNumber(row, col - 1))) {
-
-        }
 
         if (
             (this.visited.includes(this.convertCoordinateToNumber(row - 1, col)) || current !== up) &&
@@ -112,6 +101,8 @@ class Solution {
             }
         }
     }
+
+    /* list of coordinates that form an island */
 
     public solve() {
         this.map = this.fileToArray("sample.txt");
