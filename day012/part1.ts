@@ -19,7 +19,7 @@ class Solution {
     private visited: number[] = [];
     private summary: Record<string, Summary> = {};
     private perimeter: number = 0;
-    private nextInQueue: LetterQueue[] = [];
+    private explored: number[] = [];
 
 
     private fileToArray(filename: string) {
@@ -94,18 +94,39 @@ class Solution {
     private collectLetterCoordinates(areaMap: string[][]) {
         for (let row = 0; row < areaMap.length; row++) {
             for (let col = 0; col < areaMap[row].length; col++) {
-                if (this.letterCoordinates[areaMap[row][col]] && this.letterCoordinates[areaMap[row][col]].length > 0) {
+                if (!this.letterCoordinates[areaMap[row][col]]) {
+                    this.letterCoordinates[areaMap[row][col]] = [];
+                }
+                let isConnected = false;
+                for (let coord of this.letterCoordinates[areaMap[row][col]]) {
+                    if(this.twoAreConnected(coord, this.convertCoordinateToNumber(row, col))) {
+                        isConnected = true;
+                        break;
+                    }
+                    this.visited = [];
+                }
+
+                this.visited = [];
+
+                if (this.letterCoordinates[areaMap[row][col]] && this.letterCoordinates[areaMap[row][col]].length > 0 && isConnected) {
                     continue;
                 } 
-                this.letterCoordinates[areaMap[row][col]] = [this.convertCoordinateToNumber(row, col)];
+
+                this.letterCoordinates[areaMap[row][col]].push(this.convertCoordinateToNumber(row, col));
             }
         }
+    }
+
+    private twoAreConnected(coordinate: number, target: number): boolean {
+        this.getAreaAndPerimeter(this.convertNumberToCoordinate(coordinate)[0], this.convertNumberToCoordinate(coordinate)[1])
+        this.perimeter = 0;
+        return this.visited.includes(target);
     }
 
     /* list of coordinates that form an island */
 
     public solve() {
-        this.map = this.fileToArray("sample.txt");
+        this.map = this.fileToArray("input.txt");
         this.maxRow = this.map.length - 1;
         this.maxCol = this.map[0].length - 1;
         this.collectLetterCoordinates(this.map);
@@ -116,21 +137,24 @@ class Solution {
         // console.log(this.perimeter)
 
         // below is the plan to execute
+        let sum = 0
         for (const coords of Object.values(this.letterCoordinates)) {
+            let area = 0;
+            let perimeter = 0;
             for (const coordinate of coords) {
                 const row = this.convertNumberToCoordinate(coordinate)[0];
                 const col = this.convertNumberToCoordinate(coordinate)[1];
-                this.summary[this.map[row][col]] = {
-                    letter: this.map[row][col],
-                    area: this.getAreaAndPerimeter(row, col),
-                    perimeter: this.perimeter,
-                };
+                area = this.getAreaAndPerimeter(row, col)
+                perimeter = this.perimeter
+                console.log(this.map[row][col], ': area -> ', area, '; perimeter ->', perimeter);
+                sum += area * perimeter;
+                this.perimeter = 0;
             }
             this.perimeter = 0;
         }
 
-        console.log(this.summary);
-        console.log(this.map);
+        console.log(sum)
+        // console.log(this.map);
     }
 }
 
