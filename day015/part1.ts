@@ -510,6 +510,28 @@ class Solution {
         });
     }
 
+    private moveRobot(coord: number[], instruction: Direction) {
+        const [row, col] = coord;
+        const up = row - 1 >= 0 ? map[row-1][col] : null;
+        const right = map[0].length - 1 > col ? map[row][col+1] : null;
+        const down = map.length - 1 > row ? map[row+1][col] : null;
+        const left = col - 1 >= 0 ? map[row][col-1] : null;
+
+        if (instruction === Direction.UP && up === MapObject.ROAD) {
+            map[row][col] = MapObject.ROAD;
+            map[row-1][col] = MapObject.ROBOT;
+        } else if (instruction === Direction.RIGHT && right === MapObject.ROAD) {
+            map[row][col] = MapObject.ROAD;
+            map[row][col+1] = MapObject.ROBOT;
+        } else if (instruction === Direction.DOWN && down === MapObject.ROAD) {
+            map[row][col] = MapObject.ROAD;
+            map[row+1][col] = MapObject.ROBOT;
+        } else if (instruction === Direction.LEFT && left === MapObject.ROAD) {
+            map[row][col] = MapObject.ROAD;
+            map[row][col-1] = MapObject.ROBOT;
+        }
+    }
+
     public solve() {
         const [row, col] = this.getRobotCoordinate(map);
         console.log(row, col);
