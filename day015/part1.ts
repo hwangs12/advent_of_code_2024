@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs, { Dir } from 'fs'
 
 
 const instruction = `^v^<>>vv<<<^v>v>>^<v<>vvv^<<>^><^^vv>^>>>>>>v^<v^>v^>>>^v>vv<^<<vv>^<^>v>v>>>v<^>^^^>^><v^<>v<<^^vv^>><>^v>><<>v<vvv^^^v^<^><<^^v>v^>v^^^^v>^^>^>v>>vv^^>>v^v<<^vvv<v<v<>v>v^^<^v<^v<<v^>>^>v^<v>^vvv><><<vv><<>^<>^v><>^>^^>v<>v^<>v^<^v^v><>>>^>vvv<^>^v<^<>vvvv><v><<^^>^><<>^vv>^>>^<<><v>><>^<^vv^<vvvv>^<<^^v<v<^^^<^>v>^><^>^<><<><vv^^<v^>^^<v<^>>><<^>v^>^v>^^<>v<>>v^<<<^v^<<^v>^<^^v^^^v>>^>^v^^v>>v>>vv<^^^<<^v<^^v<^^>^v<v<>>^^<<^<v<^>>>>^<>><<>^><^<vv>>>vv^>^><>v<^v><>><v>><v^<v^<<^^vv^>>>v^<>v<<^<^<^^<>^^>v^<^v^<>vv^^<>^v>^^<<v^>vv^>^<v<<vv>^<<>>v<<^^><>>>^<>^v><vvvvvv>>^v^^>v^^vvv^^v^<<v^><<^>>^^<vv>v><>>^<>^vv>v^vv<<v>^<^<^<<<<v<>v^>vvv^><v>^<>>v^<>^^<^vv^<>^v<>v^^v<v>^<>v<v>^><><v<>v<v<<v^><^<v>v>^>>^>^^<><<v^^vv<v^<v><>vv^^vv>><v<<^>v>><^v<^v>vv<v>>^vv>>^<^<>^v>v>^>v^<<v>vv<<^^<^<^<>>>>^^><<v>>^>^>v><v^<vvv^<v^v>vv^vv^vvvv<<<^v^vv><^<^>^^<v<<vv>^^vv<>>>^>^><>v>^<^<vv<<>v>vv<>>^vv<v<^<<^<<><v<v<<>>^<^>>>^>>^>v^<^^v<v^><vv><^>^v^>v>vv<^v<<v<<v^^<^vv^<vvv<<><>v>v^v>vv<^v<vv<^^>v^><<v>>`+
@@ -529,6 +529,17 @@ class Solution {
         } else if (instruction === Direction.LEFT && left === MapObject.ROAD) {
             map[row][col] = MapObject.ROAD;
             map[row][col-1] = MapObject.ROBOT;
+        }
+    }
+
+    private searchRoad(coord: number[], instruction: Direction) {
+        const [rowInd, colInd] = coord;
+        let row = rowInd;
+        let col = colInd;
+        while (map[row][col] !== MapObject.WALL) {
+            if (instruction === Direction.UP) {
+
+            }
         }
     }
 
