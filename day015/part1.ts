@@ -538,7 +538,29 @@ class Solution {
         let col = colInd;
         while (map[row][col] !== MapObject.WALL) {
             if (instruction === Direction.UP) {
-
+                if (map[row][col] === MapObject.ROAD) {
+                    // move all the box and robot
+                } else {
+                    row--;
+                }
+            } else if (instruction === Direction.RIGHT) {
+                if (map[row][col] === MapObject.ROAD) {
+                    // move all the box and robot 
+                } else {
+                    col++;
+                }
+            } else if (instruction === Direction.DOWN) {
+                if (map[row][col] === MapObject.ROAD) {
+                    // move all the box and robot down
+                } else {
+                    row++;
+                }
+            } else if (instruction === Direction.LEFT) {
+                if (map[row][col] === MapObject.ROAD) {
+                    // move all the box and robot to the left
+                } else {
+                    col--;
+                }
             }
         }
     }
