@@ -565,6 +565,10 @@ class Solution {
         }
     }
 
+    private moveRobotAndBoxes(startRow: number, startCol: number, goalRow: number, goalCol: number) {
+        
+    }
+
     public solve() {
         const [row, col] = this.getRobotCoordinate(map);
         console.log(row, col);
