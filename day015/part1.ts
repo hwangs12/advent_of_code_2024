@@ -1,5 +1,4 @@
-import fs, { Dir } from 'fs'
-
+import fs from 'fs'
 
 const instruction = `^v^<>>vv<<<^v>v>>^<v<>vvv^<<>^><^^vv>^>>>>>>v^<v^>v^>>>^v>vv<^<<vv>^<^>v>v>>>v<^>^^^>^><v^<>v<<^^vv^>><>^v>><<>v<vvv^^^v^<^><<^^v>v^>v^^^^v>^^>^>v>>vv^^>>v^v<<^vvv<v<v<>v>v^^<^v<^v<<v^>>^>v^<v>^vvv><><<vv><<>^<>^v><>^>^^>v<>v^<>v^<^v^v><>>>^>vvv<^>^v<^<>vvvv><v><<^^>^><<>^vv>^>>^<<><v>><>^<^vv^<vvvv>^<<^^v<v<^^^<^>v>^><^>^<><<><vv^^<v^>^^<v<^>>><<^>v^>^v>^^<>v<>>v^<<<^v^<<^v>^<^^v^^^v>>^>^v^^v>>v>>vv<^^^<<^v<^^v<^^>^v<v<>>^^<<^<v<^>>>>^<>><<>^><^<vv>>>vv^>^><>v<^v><>><v>><v^<v^<<^^vv^>>>v^<>v<<^<^<^^<>^^>v^<^v^<>vv^^<>^v>^^<<v^>vv^>^<v<<vv>^<<>>v<<^^><>>>^<>^v><vvvvvv>>^v^^>v^^vvv^^v^<<v^><<^>>^^<vv>v><>>^<>^vv>v^vv<<v>^<^<^<<<<v<>v^>vvv^><v>^<>>v^<>^^<^vv^<>^v<>v^^v<v>^<>v<v>^><><v<>v<v<<v^><^<v>v>^>>^>^^<><<v^^vv<v^<v><>vv^^vv>><v<<^>v>><^v<^v>vv<v>>^vv>>^<^<>^v>v>^>v^<<v>vv<<^^<^<^<>>>>^^><<v>>^>^>v><v^<vvv^<v^v>vv^vv^vvvv<<<^v^vv><^<^>^^<v<<vv>^^vv<>>>^>^><>v>^<^<vv<<>v>vv<>>^vv<v<^<<^<<><v<v<<>>^<^>>>^>>^>v^<^^v<v^><vv><^>^v^>v>vv<^v<<v<<v^^<^vv^<vvv<<><>v>v^v>vv<^v<vv<^^>v^><<v>>`+
 `v<>>^^vv<>^v^<<^>><><>^vvvv^^><<<<^>v<>v>>>^>^>>>v>>>^^<>><<^^^^v<>><>v^>>vv^><<v<^><^^v^<v>v^>>>v><v><v>v<<v<>>v^<^<^vv>^v>vvv<^><><<>^^>v^v>vvv<^>>>>^^^^vv<>^vv>^<v<>^v>v^<>v<v<>>><v><vvvv^vv^^<<v>>>>v^vvvv^^><^^^<v^>><<^>^^><>^<v^<<v^v<^<^<vvv<<>>v>>^v>><^v<v<<^^><>>vv<><^<^^^>^v^^>v<^<^><<^v<v<v>v^>^<<<<>v^^^><>vv>^>v^>^>vvv>>><^>^<<><><>v>^<v>><>^^>v>^><^^vvv^^^>>vv<vv>vv><^<>>vvv^^><<>>vvvv^^><<>><>vv^^>v^^vv<><^>^>^<<><>>v^^<^^>>^<v>>^<^^v>^^^<v^v<<><v<v>><vvv>>v<>v>v^<<^v>>><>v><v<<v^v>^v^<^<>>v^vv>^<v><<<^v^>><^^>^^v><>^>^<>^<<^>v<^<<^v<v<>>v^^>^^>v<v>^v<<>^>v<><^<v>>v><v><^>vv<<v^^^^^<<><>>><v>>v>vvv<>v>^>^vvv><>^^^>v^<<<v>>v>^>>>>v^^v>v>>v^<^v<^v><<^v^>>^>^<<><<<<>^<v>^^>^^v^>><<^<^v>v>v<v>>>>v><>v<<v^^v>^>><^<^^v^>><>v^v^vv^^^><<^<>^vv>v<<>^v^^<>><>^^<v^v>v<v^<^>vvv><^^><^^>v<v^>^<<>^v<<<>>v<^<>^v^<^>vvvv<v>v>>^^vv^<^v><<>^^v>^<<>v^vv^<>><^^v^^^v^^<<<>v>^<>>>>vv^^>^>^v><<^^<>^^<<<<<<^^<^v<>^v><v^^>>vv^^vvv^v^>^v<>v>v^<v^v<^>^^v>^^v^vv<>v^><<v<<^<^^v<>^>^v<^vvvv>><>v<vvv>>><` +
@@ -540,24 +539,32 @@ class Solution {
             if (instruction === Direction.UP) {
                 if (map[row][col] === MapObject.ROAD) {
                     // move all the box and robot
+                    this.moveRobotAndBoxes(rowInd, colInd, row, col, Direction.UP);
+                    break;
                 } else {
                     row--;
                 }
             } else if (instruction === Direction.RIGHT) {
                 if (map[row][col] === MapObject.ROAD) {
                     // move all the box and robot 
+                    this.moveRobotAndBoxes(rowInd, colInd, row, col, Direction.RIGHT);
+                    break;
                 } else {
                     col++;
                 }
             } else if (instruction === Direction.DOWN) {
                 if (map[row][col] === MapObject.ROAD) {
                     // move all the box and robot down
+                    this.moveRobotAndBoxes(rowInd, colInd, row, col, Direction.DOWN);
+                    break;
                 } else {
                     row++;
                 }
             } else if (instruction === Direction.LEFT) {
                 if (map[row][col] === MapObject.ROAD) {
                     // move all the box and robot to the left
+                    this.moveRobotAndBoxes(rowInd, colInd, row, col, Direction.LEFT);
+                    break;
                 } else {
                     col--;
                 }
@@ -565,13 +572,31 @@ class Solution {
         }
     }
 
-    private moveRobotAndBoxes(startRow: number, startCol: number, goalRow: number, goalCol: number) {
-        
+    private moveRobotAndBoxes(startRow: number, startCol: number, goalRow: number, goalCol: number, instruction: Direction) {
+        if (instruction === Direction.UP) {
+            while (goalRow < startRow) {
+                map[goalRow][goalCol] = map[++goalRow][goalCol]
+            }
+        } else if (instruction === Direction.RIGHT) {
+            while (goalCol > startCol) {
+                map[goalRow][goalCol] = map[goalRow][--goalCol];
+            }
+        } else if (instruction === Direction.DOWN) {
+            while (goalRow > startRow) {
+                map[goalRow][goalCol] = map[--goalRow][goalCol];
+            }
+        } else if (instruction === Direction.LEFT) {
+            while (goalCol < startCol) {
+                map[goalRow][goalCol] = map[goalRow][++goalCol];
+            }
+        }
     }
 
     public solve() {
         const [row, col] = this.getRobotCoordinate(map);
-        console.log(row, col);
+        for (const inst of instruction) {
+            this.searchRoad([row, col], inst as Direction);
+        }
     }
 }
 
