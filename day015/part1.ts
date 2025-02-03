@@ -489,6 +489,8 @@ enum MapObject {
 }
 
 class Solution {
+    currentCol = 0;
+    currentRow = 0;
     private getRobotCoordinate(map: string[][]): number[] {
         for (const [row, rowVal] of map.entries()) {
             for (const [col, colVal] of rowVal.entries()) {
@@ -570,23 +572,32 @@ class Solution {
                 }
             }
         }
+        map[rowInd][colInd] = MapObject.ROAD;
     }
 
     private moveRobotAndBoxes(startRow: number, startCol: number, goalRow: number, goalCol: number, instruction: Direction) {
         if (instruction === Direction.UP) {
             while (goalRow < startRow) {
+                this.currentRow = goalRow;
+                this.currentCol = goalCol;
                 map[goalRow][goalCol] = map[++goalRow][goalCol]
             }
         } else if (instruction === Direction.RIGHT) {
             while (goalCol > startCol) {
+                this.currentRow = goalRow;
+                this.currentCol = goalCol;
                 map[goalRow][goalCol] = map[goalRow][--goalCol];
             }
         } else if (instruction === Direction.DOWN) {
             while (goalRow > startRow) {
+                this.currentRow = goalRow;
+                this.currentCol = goalCol;
                 map[goalRow][goalCol] = map[--goalRow][goalCol];
             }
         } else if (instruction === Direction.LEFT) {
             while (goalCol < startCol) {
+                this.currentRow = goalRow;
+                this.currentCol = goalCol;
                 map[goalRow][goalCol] = map[goalRow][++goalCol];
             }
         }
@@ -594,8 +605,10 @@ class Solution {
 
     public solve() {
         const [row, col] = this.getRobotCoordinate(map);
+        this.currentRow = row;
+        this.currentCol = col;
         for (const inst of instruction) {
-            this.searchRoad([row, col], inst as Direction);
+            this.searchRoad([this.currentCol, this.currentRow], inst as Direction);
         }
     }
 }
