@@ -608,7 +608,7 @@ class Solution {
         this.currentRow = row;
         this.currentCol = col;
         for (const inst of instruction) {
-            this.searchRoad([this.currentCol, this.currentRow], inst as Direction);
+            this.searchRoad([this.currentRow, this.currentCol], inst as Direction);
         }
     }
 }
