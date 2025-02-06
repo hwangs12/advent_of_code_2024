@@ -610,7 +610,16 @@ class Solution {
         for (const inst of instruction) {
             this.searchRoad([this.currentRow, this.currentCol], inst as Direction);
         }
-        console.log(map)
+        let sum = 0;
+        for (let row = 0; row < map.length; row++) {
+            for (let col = 0; col < map[row].length; col++) {
+                if (map[row][col] === 'O') {
+                    sum += 100 * row + col
+                }
+            }
+        }
+        console.log(sum)
+
     }
 }
 
