@@ -572,9 +572,8 @@ class Solution {
                 }
             }
         }
-        map[rowInd][colInd] = MapObject.ROAD;
     }
-
+    
     private moveRobotAndBoxes(startRow: number, startCol: number, goalRow: number, goalCol: number, instruction: Direction) {
         if (instruction === Direction.UP) {
             while (goalRow < startRow) {
@@ -601,6 +600,7 @@ class Solution {
                 map[goalRow][goalCol] = map[goalRow][++goalCol];
             }
         }
+        map[startRow][startCol] = MapObject.ROAD;
     }
 
     public solve() {
@@ -610,6 +610,7 @@ class Solution {
         for (const inst of instruction) {
             this.searchRoad([this.currentRow, this.currentCol], inst as Direction);
         }
+        console.log(map)
     }
 }
 
