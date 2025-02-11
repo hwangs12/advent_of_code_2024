@@ -515,8 +515,16 @@ class Solution {
         
     }
     
-    private moveRobotAndBoxes(startRow: number, startCol: number, goalRow: number, goalCol: number, instruction: Direction) {
-        
+    private moveRobotAndBoxes(startRow: number, startCol: number, instruction: Direction) {
+        if (instruction === Direction.UP) {
+            // move up / ignore 
+        } else if (instruction === Direction.RIGHT) {
+            // move right / ignore
+        } else if (instruction === Direction.DOWN) {
+            // move down / ignore
+        } else if (instruction === Direction.LEFT) {
+            // move left / ignore
+        }
     }
 
     public solve() {
@@ -525,7 +533,10 @@ class Solution {
         this.currentRow = row;
         this.currentCol = col;
 
-
+        for (const dir of instruction) {
+            // move the robot
+            this.moveRobotAndBoxes(this.currentRow, this.currentCol, dir as Direction)
+        }
     }
 }
 
