@@ -527,6 +527,22 @@ class Solution {
         }
     }
 
+    private moveUp() {
+
+    }
+
+    private moveRight() {
+
+    }
+
+    private moveDown() {
+
+    }
+
+    private moveLeft() {
+        
+    }
+
     public solve() {
         const fileMap = this.fileToArray('sample.txt');
         const [row, col] = this.getRobotCoordinate(fileMap)
