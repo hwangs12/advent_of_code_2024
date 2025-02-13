@@ -528,7 +528,10 @@ class Solution {
     }
 
     private moveUp() {
-
+        // find all the boxes connected, find if there is no obstacles for those
+        // move them up
+        let movableObjects = [[this.currentRow, this.currentCol]];
+        
     }
 
     private moveRight() {
