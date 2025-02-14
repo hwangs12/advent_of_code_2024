@@ -491,6 +491,7 @@ enum MapObject {
 class Solution {
     currentCol = 0;
     currentRow = 0;
+    map: string[][] = [];
     private getRobotCoordinate(map: string[][]): number[] {
         for (const [row, rowVal] of map.entries()) {
             for (const [col, colVal] of rowVal.entries()) {
@@ -530,8 +531,20 @@ class Solution {
     private moveUp() {
         // find all the boxes connected, find if there is no obstacles for those
         // move them up
+        let searchRow = this.currentRow;
+        let searchCol = this.currentCol;
+
         let movableObjects = [[this.currentRow, this.currentCol]];
-        
+        while (movableObjects.length > 0) {
+            searchRow--;
+            if (this.map[searchRow][searchCol] === ']') {
+                movableObjects.push([searchRow, searchCol]);
+                movableObjects.push([searchRow, searchCol - 1]);
+            } else if (this.map[searchRow][searchCol] === '[') {
+                movableObjects.push([searchRow, searchCol]);
+                movableObjects.push([searchRow, searchCol + 1]);
+            }
+        }
     }
 
     private moveRight() {
@@ -548,6 +561,7 @@ class Solution {
 
     public solve() {
         const fileMap = this.fileToArray('sample.txt');
+        this.map = fileMap;
         const [row, col] = this.getRobotCoordinate(fileMap)
         this.currentRow = row;
         this.currentCol = col;
