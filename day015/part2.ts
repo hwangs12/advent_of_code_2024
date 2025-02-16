@@ -482,10 +482,11 @@ enum Direction {
 }
 
 enum MapObject {
-    WALL = '#',
+    OPENING_BOX = '[',
+    CLOSING_BOX = ']',
     ROBOT = '@',
     ROAD = '.',
-    BOX = 'O'
+    WALL = '#'
 }
 
 class Solution {
@@ -557,7 +558,7 @@ class Solution {
             const mapObject = this.map[searchRow][searchCol];
             if (mapObject === MapObject.WALL) {
                 return;
-            } else if (mapObject === MapObject.BOX) {
+            } else if (mapObject === MapObject.OPENING_BOX || mapObject === MapObject.CLOSING_BOX) {
                 searchCol++;
             }
         }
@@ -583,7 +584,7 @@ class Solution {
             const mapObject = this.map[searchRow][searchCol];
             if (mapObject === MapObject.WALL) {
                 return;
-            } else if (mapObject === MapObject.BOX) {
+            } else if (mapObject === MapObject.OPENING_BOX || mapObject === MapObject.CLOSING_BOX) {
                 searchCol--;
             }
         }
