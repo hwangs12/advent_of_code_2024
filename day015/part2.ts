@@ -548,6 +548,10 @@ class Solution {
         }
     }
 
+    private collectUp(row: number, col: number) {
+        
+    }
+
     private moveRight() {
         // move all the way if you find there's a road;
         let searchRow = this.currentRow;
