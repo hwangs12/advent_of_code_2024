@@ -571,7 +571,23 @@ class Solution {
     }
 
     private moveDown() {
+        let searchRow = this.currentRow;
+        let searchCol = this.currentCol;
 
+        // search for road, if there's wall then ignore;
+        while (this.map[searchRow][searchCol] !== MapObject.ROAD) {
+            const mapObject = this.map[searchRow][searchCol];
+            if (mapObject === MapObject.WALL) {
+                return;
+            } else if (mapObject === MapObject.OPENING_BOX || mapObject === MapObject.CLOSING_BOX) {
+                searchRow++;
+            }
+        }
+
+        // move all the way to the road;
+        while (searchRow > this.currentCol) {
+            this.map[searchRow][searchCol] = this.map[--searchRow][searchCol]
+        }
     }
 
     private moveLeft() {
