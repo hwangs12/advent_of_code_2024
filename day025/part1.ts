@@ -1,6 +1,17 @@
 import fs from 'fs'
 
 class Solution {
+    private keyGrid: string[][][] = [];
+    private keyLockPinMap: Record<string, number[][]> = {
+        key: [],
+        lock: [],
+    };
+
+
+    public keyLock(chunk: string[][]) {
+        return chunk[0].every((item) => item === '.');
+    }
+
     public fileMap(filename: string) {
         const file = fs.readFileSync(filename, 'utf8')
         const row = file.split('\n')
@@ -21,7 +32,8 @@ class Solution {
             })
         })
 
-        // chuck sample
+        return chuck;
+        // chuck sample consists of chunks like this;
         /**
          * [ '.', '.', '.', '.', '.' ],
          * [ '.', '.', '#', '.', '.' ],
@@ -33,7 +45,33 @@ class Solution {
          */
 
     }
+
+    private countPin(chunk: string[][]): number[] {
+        let pinCountArray = Array(chunk[0].length).fill(0);
+        chunk.forEach((row, ind) => {
+            row.forEach((mem, jnd) => {
+                if (mem === '#') {
+                    pinCountArray[jnd] += 1;
+                }
+            })
+        })
+        return pinCountArray;
+    }
+
+    public solve() {
+        this.keyGrid = this.fileMap('input.txt');
+
+        this.keyGrid.forEach((item, index) => {
+            if (this.keyLock(item)) {
+                this.keyLockPinMap.key.push(this.countPin(item))
+            } else {
+                this.keyLockPinMap.lock.push(this.countPin(item))
+            };
+        })
+
+        console.log(this.keyLockPinMap);
+    }
 }
 
 const sol = new Solution()
-sol.fileMap('input.txt');
+sol.solve();
