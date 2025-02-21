@@ -7,6 +7,8 @@ class Solution {
         lock: [],
     };
 
+    private fitCount = 0;
+
 
     public keyLock(chunk: string[][]) {
         return chunk[0].every((item) => item === '.');
@@ -58,6 +60,15 @@ class Solution {
         return pinCountArray;
     }
 
+    private keyLockFit(key: number[], lock: number[]) {
+        for (let i = 0; i < key.length; i++) {
+            if (key[i] + lock[i] > 7) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public solve() {
         this.keyGrid = this.fileMap('input.txt');
 
@@ -69,7 +80,15 @@ class Solution {
             };
         })
 
-        console.log(this.keyLockPinMap);
+        this.keyLockPinMap.key.forEach((key) => {
+            this.keyLockPinMap.lock.forEach((lock) => {
+                if (this.keyLockFit(key, lock)) {
+                    this.fitCount++;
+                }
+            })
+        })
+
+        console.log(this.fitCount);
     }
 }
 
