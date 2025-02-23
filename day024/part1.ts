@@ -68,6 +68,7 @@ class Solution {
         let binArr = Array(46).fill(0);
         Object.keys(this.input).forEach((key) => {
             if (key.startsWith('z')) {
+                console.log(key, ": ", this.input[key])
                 let index = Number(key.slice(1))
                 binArr[index] = this.input[key];
             }
