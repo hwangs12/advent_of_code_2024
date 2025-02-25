@@ -150,8 +150,90 @@ class Solution {
         });
 
         // console.log(sum);
+
+    }
+
+    public drawMapper() {
+        this.mapFile("map.txt");
+        let zLove = [];
+        for (const eqn of this.gateMap) {
+            let firstString = eqn[eqn.length -1]
+            if (typeof firstString === 'string') {
+                if (firstString.slice(0, 1) === 'z') {
+                    zLove.push(eqn);
+                }
+            }
+        }
+        
+        zLove.sort((a, b) => {
+            let zVal1 = a[a.length - 1]
+            let zVal2 = b[b.length - 1]
+            if (typeof zVal1 === 'string' && typeof zVal2 === 'string') {
+                if (Number(zVal1.slice(1)) > Number(zVal2.slice(1))) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            } else {
+                return 0;
+            }
+
+        })
+        // ultimately this is the puzzle i need to figure out maybe?
+        let gatePuzzle = [
+            [ 'x00', 'XOR', 'y00', '->', 'z00' ],
+            [ 'vsn', 'XOR', 'rhk', '->', 'z01' ],
+            [ 'mbr', 'XOR', 'pwg', '->', 'z02' ],
+            [ 'rsm', 'XOR', 'jdt', '->', 'z03' ],
+            [ 'hfw', 'XOR', 'ggh', '->', 'z04' ],
+            [ 'pvb', 'XOR', 'jbd', '->', 'z05' ],
+            [ 'qrb', 'XOR', 'dck', '->', 'z06' ],
+            [ 'hqs', 'XOR', 'jmb', '->', 'z07' ],
+            [ 'vqp', 'AND', 'frr', '->', 'z08' ],
+            [ 'dnc', 'XOR', 'pjb', '->', 'z09' ],
+            [ 'qnq', 'XOR', 'ftn', '->', 'z10' ],
+            [ 'gtv', 'XOR', 'gst', '->', 'z11' ],
+            [ 'vmv', 'XOR', 'rmm', '->', 'z12' ],
+            [ 'cqb', 'XOR', 'pbd', '->', 'z13' ],
+            [ 'hgw', 'XOR', 'wss', '->', 'z14' ],
+            [ 'mjj', 'XOR', 'gtc', '->', 'z15' ],
+            [ 'djg', 'XOR', 'kpw', '->', 'z16' ],
+            [ 'ppk', 'XOR', 'dgk', '->', 'z17' ],
+            [ 'stq', 'XOR', 'dgj', '->', 'z18' ],
+            [ 'wfs', 'XOR', 'grf', '->', 'z19' ],
+            [ 'qgg', 'XOR', 'pbq', '->', 'z20' ],
+            [ 'bnv', 'XOR', 'nhj', '->', 'z21' ],
+            [ 'y22', 'AND', 'x22', '->', 'z22' ],
+            [ 'fhs', 'XOR', 'fjs', '->', 'z23' ],
+            [ 'qbr', 'XOR', 'qsr', '->', 'z24' ],
+            [ 'dwm', 'XOR', 'cnn', '->', 'z25' ],
+            [ 'fcn', 'XOR', 'pmf', '->', 'z26' ],
+            [ 'rbr', 'XOR', 'frj', '->', 'z27' ],
+            [ 'bst', 'XOR', 'stp', '->', 'z28' ],
+            [ 'grd', 'OR', 'rpq', '->', 'z29' ],
+            [ 'gbs', 'XOR', 'rrg', '->', 'z30' ],
+            [ 'hvf', 'XOR', 'pfk', '->', 'z31' ],
+            [ 'qvq', 'XOR', 'cdn', '->', 'z32' ],
+            [ 'tsp', 'XOR', 'vng', '->', 'z33' ],
+            [ 'vkv', 'XOR', 'bbc', '->', 'z34' ],
+            [ 'jrp', 'XOR', 'mpj', '->', 'z35' ],
+            [ 'qvh', 'XOR', 'fpc', '->', 'z36' ],
+            [ 'tdm', 'XOR', 'pvc', '->', 'z37' ],
+            [ 'vvm', 'XOR', 'dnk', '->', 'z38' ],
+            [ 'pmq', 'XOR', 'ggj', '->', 'z39' ],
+            [ 'qbn', 'XOR', 'dhr', '->', 'z40' ],
+            [ 'jhf', 'XOR', 'pgs', '->', 'z41' ],
+            [ 'cpr', 'XOR', 'vjq', '->', 'z42' ],
+            [ 'ktr', 'XOR', 'qkd', '->', 'z43' ],
+            [ 'rrq', 'XOR', 'gjw', '->', 'z44' ],
+            [ 'fpg', 'OR', 'dqg', '->', 'z45' ]
+        ]
+
+        for (const zaq of gatePuzzle) {
+            console.log(zaq);
+        }
     }
 }
 
 const sol = new Solution();
-sol.solve();
+sol.drawMapper();
