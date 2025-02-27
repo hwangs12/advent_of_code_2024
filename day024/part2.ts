@@ -109,7 +109,7 @@ class Solution {
         };
 
         // below was for part1
-        for (let i = 0; i < 1000; i++) {
+        /* for (let i = 0; i < 1000; i++) {
             this.gateMap.map((gate) => {
                 if (Number.isInteger(this.input[gate[0]])) {
                     gate[0] = this.input[gate[0]];
@@ -132,7 +132,7 @@ class Solution {
                     }
                 }
             });
-        }
+        } */
 
         // this.gateMap.map((gate) => {
         //     console.log(gate);

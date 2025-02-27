@@ -74,6 +74,7 @@ class Solution {
         })
         let sum = 0;
         binArr.forEach((item, index) => {
+            console.log(item);
             sum += item * (2 ** index);
         })
 
