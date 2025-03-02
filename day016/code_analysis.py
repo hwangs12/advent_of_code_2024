@@ -14,7 +14,7 @@ def astar(g: dict, start_node: tuple[int, int], goal_node: tuple[int, int]) -> l
             n = came_from[n]
             p.append(n)
         return p
-
+    # where is open_set? 
     while len(open_set) > 0:
         curr_cost, curr_node = heappop(open_set)
         if curr_node == goal_node:
