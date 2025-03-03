@@ -16,6 +16,7 @@ def astar(g: dict, start_node: tuple[int, int], goal_node: tuple[int, int]) -> l
         return p
     # where is open_set? 
     while len(open_set) > 0:
+        # ex) (0, (1, 2)) 0 = curr_cost, (1, 2) = curr_node
         curr_cost, curr_node = heappop(open_set)
         if curr_node == goal_node:
             goal_path = rebuild_path(goal_node)
