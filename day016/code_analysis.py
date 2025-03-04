@@ -31,3 +31,6 @@ def astar(g: dict, start_node: tuple[int, int], goal_node: tuple[int, int]) -> l
                 came_from[neighbor] = curr_node
 
     return None
+
+
+# ex astar()
